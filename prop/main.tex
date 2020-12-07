@@ -1,0 +1,100 @@
+\documentclass{article}
+
+
+
+\usepackage[utf8]{inputenc}
+
+\usepackage{natbib}
+\usepackage{hyperref}
+
+\usepackage{graphicx}
+
+\usepackage[colorinlistoftodos]{todonotes}
+
+\usepackage{parskip}
+\setlength{\parskip}{10pt} 
+
+\usepackage{tikz}
+\usetikzlibrary{arrows, decorations.markings}
+
+\usepackage{chngcntr}
+\counterwithout{figure}{section}
+
+
+
+\begin{document}
+
+
+\begin{titlepage}
+  
+
+\centering
+  
+  
+{\scshape\LARGE Master thesis project proposal\\}
+  
+\vspace{0.5cm}
+  
+{\huge\bfseries Title of the project\\}
+  
+\vspace{2cm}
+  
+{\Large Yasmeen Emampoor (gusemampya@student.gu.se)\\}
+  
+\vspace{1.0cm}
+  
+{\large Suggested Supervisor: Simon Dobnik (FLoV)\\}
+  
+\vspace{1.5cm}
+  
+  
+{\large Relevant completed courses:\par}
+{\itshape (DIT381, Algorithms for Machine Learning and Inference)\\ (DIT866, Applied Machine Learning) \\ (DIT869, Deep Machine Learning)}
+  
+\vspace{1.5cm}
+  
+\vfill
+
+\vfill
+  
+{\large \today\\} 
+
+
+\end{titlepage}
+\section{Introduction}
+Robots have the potential to be useful in many fields--they can perform tasks that are dangerous for humans, as well as tasks that are simply tedious. For example, after the Fukushima nuclear disaster, Kobra robots were sent in to do assessment, since the radiation made the area too dangerous for humans\cite{kobra}. Robots in hospitals can perform both hazardous tasks, like room decontamination, and tedious tasks, like moving supplies such as linens. These robots are often operated based on pre-defined action sequences or remotely by a human. The potential increases in efficiency from being able to give a goal/task in natural language and have the robot interpret and determine how to carry out this task are huge. 
+
+Natural language interaction would make robots more accessible generally, since it would reduce the learning curve for operating them. It's much easier for a patient in a hospital if they can tell the robot that came to check on them: 'I'm hungry', rather than having to say 'Go six meters down the hall, into the elevator, go to the ground floor, turn left and go 15 meters. Go to the kitchen and get my dinner. Come back here.' Right now, even those incredibly detailed directions would likely not be possible--a patient would likely have to enter some kind of input via a physical interface, an entry barrier that means that robots are usually designed to be used by specific people, rather than as free-floating assistants.
+
+
+\section{Context}
+One key problem currently being actively explored is object navigation, where an agent is asked to go find a specific object. 
+
+\subsection{Navigation from Dialogue}
+A number of approaches are currently being developed, and there has been work to create navigation dialogue datasets. A common way to create these datasets is through collecting human-human dialogues. One such dataset is RobotSlang\cite{robotslang}, consisting of 169 dialogues between a commander referencing a static map and a human driver only able to see the camera view of the robot they were controlling. The commander relayed instructions to the driver, based on their understanding of where the robot was. The driver was able to ask clarifying questions, such as where exactly to turn, and the commander could periodically ask localization questions, such as what color wall the driver could see. This data was then used in replay simulations, during which one task was navigation from dialogue history, in which the model is given the dialogue up to the current point, and has to predict what actions the driver would have taken, based on the dialogue. In training, the driver's next action is used as the ground truth. 
+
+A larger set of dialogues, Cooperative Vision-and-Dialog Navigation, was collected with two people using the Matterport3D simulator, with one person, the 'oracle' able to see the ideal moves for the navigation task, giving natural language instructions to the other person, the 'navigator'\cite{thomason2019visionanddialog}. 
+
+\subsection{Asking for Help}
+It is useful to be able to give a robot instructions in natural language. However, the above approach requires that the person directing the robot knows how to reach the goal, and requires them to give instructions for every movement. Having a robot that can be given a goal in natural language, follow a policy towards that goal, and ask for help if it doesn't know where to go, is more helpful in a lot of situations. A robot moving through a building could request aid from multiple people, for example, and an individual person wouldn't have to know exactly where/how to find an object. Nguyen (2019) present a method for this\cite{Nguyen_2019_CVPR}, in which the agent is trained by a teacher and advisor, and during testing continues to have access to the advisor. The agent can request help, or the advisor can choose to intervene. 
+
+\subsection{Semantic Mapping}
+Approaches to Object Navigation based less on human interaction have also had success, such as Chaplot (2020), which uses semantic information developing its goal policy\cite{semexp}. It won the CVPR 2020 Habitat ObjectNav Challenge.
+
+\section{Goals and Challenges}
+-combine advisor with policy like SemExp. SubQuestion: Do these generalize better than trained w/ e.g. shortest path policy? \textcolor{red}{TODO: Look at comparisons}\\
+- data collection is difficult, and often very location specific
+
+\section{Approach}
+AI Habitat is a simulation platform for working with embodied AI\cite{habitat19iccv}. It consists of two parts, Habitat-Sim, the 3D simulator, and Habitat-Lab, the library for embodied AI development. Habitat's current main focus is navigation, but there is some ability for object interactions--for example moving a chair from one point to another. 
+
+Habitat has support for Matterport3D, so the Cooperative Vision-and-Dialog Navigation dataset should be possible to use. 
+
+
+%\section{References}
+\bibliographystyle{ieeetr}
+\bibliography{references}
+
+
+
+\end{document}
