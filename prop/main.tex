@@ -35,7 +35,7 @@
   
 \vspace{0.5cm}
   
-{\huge\bfseries Title of the project\\}
+{\huge\bfseries Giving Information to Embodied Agents in Dialogue-Based Navigation Tasks\\}
   
 \vspace{2cm}
   
@@ -62,39 +62,54 @@
 
 \end{titlepage}
 \section{Introduction}
-Robots have the potential to be useful in many fields--they can perform tasks that are dangerous for humans, as well as tasks that are simply tedious. For example, after the Fukushima nuclear disaster, Kobra robots were sent in to do assessment, since the radiation made the area too dangerous for humans\cite{kobra}. Robots in hospitals can perform both hazardous tasks, like room decontamination, and tedious tasks, like moving supplies such as linens. These robots are often operated based on pre-defined action sequences or remotely by a human. The potential increases in efficiency from being able to give a goal/task in natural language and have the robot interpret and determine how to carry out this task are huge. 
-
-Natural language interaction would make robots more accessible generally, since it would reduce the learning curve for operating them. It's much easier for a patient in a hospital if they can tell the robot that came to check on them: 'I'm hungry', rather than having to say 'Go six meters down the hall, into the elevator, go to the ground floor, turn left and go 15 meters. Go to the kitchen and get my dinner. Come back here.' Right now, even those incredibly detailed directions would likely not be possible--a patient would likely have to enter some kind of input via a physical interface, an entry barrier that means that robots are usually designed to be used by specific people, rather than as free-floating assistants.
-
+Robots have the potential to be useful in many fields–they can perform tasks
+that are dangerous for humans, as well as tasks that are simply tedious. These
+robots are often operated based on pre-defined actions, or remotely. The potential increases in efficiency from being able to give a goal/task in natural language
+and have the robot interpret and determine how to carry out this task are huge.
+This would make robots more accessible generally, since it would reduce the
+learning curve for operating them. A patient in a hospital would likely find it much easier to simply tell the robot 'I need water', rather than having to find the 'water' option on some sort of touchscreen interface.
 
 \section{Context}
-One key problem currently being actively explored is object navigation, where an agent is asked to go find a specific object. 
+\subsection{Grounding}
+A key challenge in creating robots that can interact with humans in natural language is grounding--connecting an external object to a word or phrase. This challenge also includes linking of actions to words. What does 'turn' mean? One place where the grounding problem can be seen is in image captioning, where models need to produce both the objects in the image, and their interactions with each other\cite{karpathy2014captioning}.
 
-\subsection{Navigation from Dialogue}
-A number of approaches are currently being developed, and there has been work to create navigation dialogue datasets. A common way to create these datasets is through collecting human-human dialogues. One such dataset is RobotSlang\cite{robotslang}, consisting of 169 dialogues between a commander referencing a static map and a human driver only able to see the camera view of the robot they were controlling. The commander relayed instructions to the driver, based on their understanding of where the robot was. The driver was able to ask clarifying questions, such as where exactly to turn, and the commander could periodically ask localization questions, such as what color wall the driver could see. This data was then used in replay simulations, during which one task was navigation from dialogue history, in which the model is given the dialogue up to the current point, and has to predict what actions the driver would have taken, based on the dialogue. In training, the driver's next action is used as the ground truth. 
+There is also currently research in grounding through interaction with the environment. Hermann et. al present a simulated embodied agent learning grounded language through a combination of unsupervised and reinforcement learning, with minimal prior knowledge\cite{hermann2017grounded}. Another approach with minimal prior knowledge is presented by Thomason et. al, where the robot learns through dialogue with a human\cite{thomason2019grounded}.
 
-A larger set of dialogues, Cooperative Vision-and-Dialog Navigation, was collected with two people using the Matterport3D simulator, with one person, the 'oracle' able to see the ideal moves for the navigation task, giving natural language instructions to the other person, the 'navigator'\cite{thomason2019visionanddialog}. 
+\subsection{Navigation}
+Navigation is a common task for robots, a subset of instruction following; applications for robots include moving through a space recording or streaming video back to a human and collecting objects in a space to deliver to someone in a different space. 
+\subsubsection{Dialogue}
+Navigation based on dialogue is a current area of active research--datasets for a dialogue based navigation tasks are often collected as human-human dialogues, which are then used to train agents in replay or supervised learning scenarios. 
 
-\subsection{Asking for Help}
-It is useful to be able to give a robot instructions in natural language. However, the above approach requires that the person directing the robot knows how to reach the goal, and requires them to give instructions for every movement. Having a robot that can be given a goal in natural language, follow a policy towards that goal, and ask for help if it doesn't know where to go, is more helpful in a lot of situations. A robot moving through a building could request aid from multiple people, for example, and an individual person wouldn't have to know exactly where/how to find an object. Nguyen (2019) present a method for this\cite{Nguyen_2019_CVPR}, in which the agent is trained by a teacher and advisor, and during testing continues to have access to the advisor. The agent can request help, or the advisor can choose to intervene. 
+Cooperative Vision-and-Dialog Navigation is a dataset of over 2000 navigation dialogues\cite{thomason2019visionanddialog}. It was collected via Mechanical Turk crowd-sourcing; pairs used the Matterport3D simulator and a chat interface, with one person, the ’oracle’, able to see the ideal moves for the navigation task, giving natural language instructions to the other person, the ’navigator'. The navigator could ask clarifying questions. The oracle was also shown the navigator's current visual frame. 
 
-\subsection{Semantic Mapping}
-Approaches to Object Navigation based less on human interaction have also had success, such as Chaplot (2020), which uses semantic information developing its goal policy\cite{semexp}. It won the CVPR 2020 Habitat ObjectNav Challenge.
+A similar but smaller dataset is RobotSlang, consisting of 169 dialogues between a commander referencing a static map and a human driver only able to see the camera view of the robot they were controlling\cite{robotslang}. The commander relayed instructions to the driver, based on their understanding of where the robot was. The driver was able to ask clarifying questions, such as where exactly to turn, and the commander could periodically ask localization questions, such as what color wall the driver could see.
+
+\subsection{Simulation}
+Working with embodied agents is resource intensive and makes reproducibility difficult to impossible, so simulation is popular for research. 
+
+AI Habitat is a simulation platform for working with embodied AI\cite{habitat19iccv}. It consists of two parts, Habitat-Sim, the 3D simulator, and Habitat-Lab, the library for embodied AI development. Habitat's current main focus is navigation, mainly through indoor spaces, but there is some ability for object interactions--for example moving a chair from one point to another. Habitat-PyRobot Bridge is a library, written by members of the Habitat team, to support the transfer of a simulated agent in Habitat to a physical robot\cite{Kadian_2020}. 
 
 \section{Goals and Challenges}
--combine advisor with policy like SemExp. SubQuestion: Do these generalize better than trained w/ e.g. shortest path policy? \textcolor{red}{TODO: Look at comparisons}\\
-- data collection is difficult, and often very location specific
+For this project, the overarching question is: how can information learned in other contexts be used to improve performance of an agent in a navigation task?
+
+Object navigation seems like a good candidate for transfer learning, since when humans are performing navigation tasks, they use a lot of information that they've learned from other contexts. Color, for example, or what room people typically use an item in. 
+
+Also, datasets for dialogue navigation take a long time to collect, since they are
+generated in real time, and the navigation tasks can take a while. Because of this, many navigation datasets are small, which limits the agent's knowledge, so being able to use disparate datasets would be beneficial. For example, maybe an agent could learn colors and positions from a dialogue about items on a table, and then would be able to apply that knowledge from the beginning when presented with dialogue navigating through a house. 
+
+Another use for transfer learning is in the fact that a goal within this research is for these human-human dialogues to become human-robot dialogues, more flexible than those described in \cite{thomason2019grounded}. Transfer learning could aid in teaching the robot grammar and vocabulary, rather than limiting its knowledge of language to the navigation dialogue, making it easier to create a robot that could generate its own responses to instructions. 
 
 \section{Approach}
-AI Habitat is a simulation platform for working with embodied AI\cite{habitat19iccv}. It consists of two parts, Habitat-Sim, the 3D simulator, and Habitat-Lab, the library for embodied AI development. Habitat's current main focus is navigation, but there is some ability for object interactions--for example moving a chair from one point to another. 
+I plan to use Habitat to simulate my navigation agents and environment, and the Cooperative Vision-and-Dialogue Navigation set as the main dataset for training and testing of the agents. 
 
-Habitat has support for Matterport3D, so the Cooperative Vision-and-Dialog Navigation dataset should be possible to use. 
+I will also need to determine what models have been used for navigation agents, and what kinds of representations those models learn and use. These representations will affect what kinds of background knowledge could help the model--a mainly word based representation might benefit from pre-training with general natural language dialogues, a mainly visual one probably wouldn't.
 
+Another thing I will need to identify is potential datasets or pre-trained models for background/external knowledge: navigation datasets in other scenarios (outside, for example), datasets of learning information like position in non-navigation scenarios ('what is to the left of the blue ball in this picture?', for example), models for image captioning, or general natural language dialogues.
+
+Next would be to build and train a model for object navigation solely on the Cooperative Vision-and-Dialogue Navigation dataset, to compare with models incorporating background information. After this, I would need to build and train models incorporating background information, and compare them. 
 
 %\section{References}
 \bibliographystyle{ieeetr}
 \bibliography{references}
-
-
 
 \end{document}
