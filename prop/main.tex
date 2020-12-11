@@ -69,14 +69,21 @@ and have the robot interpret and determine how to carry out this task are huge.
 This would make robots more accessible generally, since it would reduce the
 learning curve for operating them. A patient in a hospital would likely find it much easier to simply tell the robot 'I need water', rather than having to find the 'water' option on some sort of touchscreen interface.
 
+% SD 2020-12-11 21:10:09 +0100: There may be cases where even more complex understanding of the natural language instructions is required which would be very complex for the person so "describe" using touch screen interface. For example, human-robot teaming: https://link.springer.com/article/10.1007/s13218-015-0352-5 \cite{Kruijff-Korbayova:2015aa} and There is a lot of research in this area how robots and humans could work together, see for example the references to this paper I found https://arxiv.org/pdf/2009.00288.pdf
+
 \section{Context}
 \subsection{Grounding}
 A key challenge in creating robots that can interact with humans in natural language is grounding--connecting an external object to a word or phrase. This challenge also includes linking of actions to words. What does 'turn' mean? One place where the grounding problem can be seen is in image captioning, where models need to produce both the objects in the image, and their interactions with each other\cite{karpathy2014captioning}.
 
+% SD 2020-12-11 21:25:12 +0100: Actually, the notion of grounding language in perception has been explored in robotics first and then moved into image captioning which is a much younger task: https://canvas.gu.se/courses/36167/assignments/75554 and https://canvas.gu.se/courses/36167/assignments/76897
+
 There is also currently research in grounding through interaction with the environment. Hermann et. al present a simulated embodied agent learning grounded language through a combination of unsupervised and reinforcement learning, with minimal prior knowledge\cite{hermann2017grounded}. Another approach with minimal prior knowledge is presented by Thomason et. al, where the robot learns through dialogue with a human\cite{thomason2019grounded}.
 
 \subsection{Navigation}
-Navigation is a common task for robots, a subset of instruction following; applications for robots include moving through a space recording or streaming video back to a human and collecting objects in a space to deliver to someone in a different space. 
+Navigation is a common task for robots, a subset of instruction following; applications for robots include moving through a space recording or streaming video back to a human and collecting objects in a space to deliver to someone in a different space.
+
+% SD 2020-12-11 21:37:27 +0100: Here you could expand that there is active research on how humans navigate and reason in space. Perhaps a paper by Diedrich Wolter: https://www.sfbtr8.spatial-cognition.de/project/r3/material/QSR_Challenges.pdf \cite{Wallgrun:2007zr}
+
 \subsubsection{Dialogue}
 Navigation based on dialogue is a current area of active research--datasets for a dialogue based navigation tasks are often collected as human-human dialogues, which are then used to train agents in replay or supervised learning scenarios. 
 
@@ -84,18 +91,25 @@ Cooperative Vision-and-Dialog Navigation is a dataset of over 2000 navigation di
 
 A similar but smaller dataset is RobotSlang, consisting of 169 dialogues between a commander referencing a static map and a human driver only able to see the camera view of the robot they were controlling\cite{robotslang}. The commander relayed instructions to the driver, based on their understanding of where the robot was. The driver was able to ask clarifying questions, such as where exactly to turn, and the commander could periodically ask localization questions, such as what color wall the driver could see.
 
+% SD 2020-12-11 21:42:35 +0100: Similarly, a lot of research has been done on the language side and dialogue. How humans generate descriptions in conversation that are understandable by conversational partners? What landmarks will they use? How will they structure the route description: it is unlikely that they will give a complex description (as you would get from Google straight away). The description will be dependent on who the conversational partner is and what task they are involved in which further complicated computational modelling on the natural language processing side. Perhaps, \cite{Tenbrink:2010qf,Fellner:2017aa,Janarthanam:2012aa}
+
 \subsection{Simulation}
 Working with embodied agents is resource intensive and makes reproducibility difficult to impossible, so simulation is popular for research. 
 
 AI Habitat is a simulation platform for working with embodied AI\cite{habitat19iccv}. It consists of two parts, Habitat-Sim, the 3D simulator, and Habitat-Lab, the library for embodied AI development. Habitat's current main focus is navigation, mainly through indoor spaces, but there is some ability for object interactions--for example moving a chair from one point to another. Habitat-PyRobot Bridge is a library, written by members of the Habitat team, to support the transfer of a simulated agent in Habitat to a physical robot\cite{Kadian_2020}. 
 
+% SD 2020-12-11 21:35:47 +0100: You could also expand the point about reproducibility earlier that working with simulation environments has benefits for research since different systems can be compared, and datasets of human descriptions (which are expensive to obtain) reused.
+
 \section{Goals and Challenges}
-For this project, the overarching question is: how can information learned in other contexts be used to improve performance of an agent in a navigation task?
+For this project, the overarching question is: how can information learned in other contexts be used to improve performance of an agent in a navigation task? % SD 2020-12-11 22:04:22 +0100: Given this research quetsion it is good that you give more background about the challenges for navigation instructions as I commeneted above.
 
 Object navigation seems like a good candidate for transfer learning, since when humans are performing navigation tasks, they use a lot of information that they've learned from other contexts. Color, for example, or what room people typically use an item in. 
 
 Also, datasets for dialogue navigation take a long time to collect, since they are
-generated in real time, and the navigation tasks can take a while. Because of this, many navigation datasets are small, which limits the agent's knowledge, so being able to use disparate datasets would be beneficial. For example, maybe an agent could learn colors and positions from a dialogue about items on a table, and then would be able to apply that knowledge from the beginning when presented with dialogue navigating through a house. 
+generated in real time, and the navigation tasks can take a while. % SD 2020-12-11 21:58:38 +0100: The bottle-neck is mainly due to human descriptions. These take time and several thousand route instructions would be required for an unsupervised approach.
+Because of this, many navigation datasets are small, which limits the agent's knowledge, so being able to use disparate datasets would be beneficial. For example, maybe an agent could learn colors and positions from a dialogue about items on a table, and then would be able to apply that knowledge from the beginning when presented with dialogue navigating through a house.
+
+% SD 2020-12-11 22:06:15 +0100: We could train the system on corpora of dialogue from a different domain and then fine tune it on this domain. This way the system would already know something about the interaction strategies of humans; the leanring would then be adapting this knowledge to the route instruction scenario.
 
 Another use for transfer learning is in the fact that a goal within this research is for these human-human dialogues to become human-robot dialogues, more flexible than those described in \cite{thomason2019grounded}. Transfer learning could aid in teaching the robot grammar and vocabulary, rather than limiting its knowledge of language to the navigation dialogue, making it easier to create a robot that could generate its own responses to instructions. 
 
@@ -107,6 +121,8 @@ I will also need to determine what models have been used for navigation agents, 
 Another thing I will need to identify is potential datasets or pre-trained models for background/external knowledge: navigation datasets in other scenarios (outside, for example), datasets of learning information like position in non-navigation scenarios ('what is to the left of the blue ball in this picture?', for example), models for image captioning, or general natural language dialogues.
 
 Next would be to build and train a model for object navigation solely on the Cooperative Vision-and-Dialogue Navigation dataset, to compare with models incorporating background information. After this, I would need to build and train models incorporating background information, and compare them. 
+
+% SD 2020-12-11 22:08:22 +0100: Looks good! Good luck!
 
 %\section{References}
 \bibliographystyle{ieeetr}
