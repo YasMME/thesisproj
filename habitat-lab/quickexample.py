@@ -1,3 +1,5 @@
+#example from habitat docs
+
 import habitat
 from habitat.sims.habitat_simulator.actions import HabitatSimActions
 import cv2
