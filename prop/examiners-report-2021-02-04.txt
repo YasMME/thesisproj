@@ -1,0 +1,32 @@
+---------- Forwarded message ---------
+Från: Koen Claessen <koen@chalmers.se>
+Date: tors 4 feb. 2021 kl 14:59
+Subject: Re: Examiner
+To: Yasmeen Emampoor <gusemampya@student.gu.se>
+
+
+Hi Yasmeen,
+
+This looks very interesting! A good problem area, and ambitious goal.
+
+Your proposal contains a lot of useful information, but a few key aspects are lacking. What I need to see is:
+
+1. A clear description of a concrete problem. You describe a whole problem area, but I have a hard time seeing exactly what you will be working on and what you will produce. A good question to answer is "How will the area be different after I have done my work?" What activity will you improve upon?
+
+It would be helpful to describe a *concrete example* of a typical scenario where a human interacts with a robot (for example) and what is bad about it / doesn't work / could be improved. Then you can say, what I do in my work is hopefully going to improve it like this: and then you show the improved version.
+
+2. A clear description of how you decide that you are done. You say you want to "improve performance", but that is such a vague thing to say. Be concrete (and bold!). Say "we want the number of times the robot misunderstands the human to go down by 50%" (or whatever). 
+
+This part is really important, because it will serve as a way to match expectations between you, your supervisor, and your examiner.
+
+Ideally, this part is so concrete, that any day during your work, anyone can read what it says, look at what you have done so far and say "you are done" or "you are not done yet".
+
+I want to encourage you to be bold and ambitious here in this part, you don't have to cover your grounds here, in case don't go as planned. In all likelihood, things will not go as planned anyway, don't worry about it. Nothing bad will happen if you don't do what is said in this document! This document just describes a feasible possible future that would make you, your supervisor, and your examiner happy. If anything happens that makes you deviate from what is written in this report, that just means that you have to communicate with your supervisor and examiner to re-match expectations.
+
+Good luck!
+
+One more note: I assume you have already started your work. That is fine, please continue with it, don't let this thing stop you from making progress. But I would like us to have a project description that satisfies these points sooner rather than later. Hopefully it will help to structure your work as well!
+
+/Koen
+
+/Koen
