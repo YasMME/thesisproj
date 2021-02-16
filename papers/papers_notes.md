@@ -1,0 +1,13 @@
+| Title | Authors | Focus | Model | Task | Notes | Code |
+| ---|:---|:---|:---|:---|:---|:---|
+|Habitat: A Platform for Embodied AI Research|<details><summary>authors</summary>Manolis Savva, Abhishek Kadian, Oleksandr Maksymets, Yili Zhao, Erik Wijmans, Bhavana Jain, Julian Straub, Jia Liu, Vladlen Koltun, Jitendra Malik, Devi Parikh, Dhruv Batra</details>|Platform||3D simulation|<https://aihabitat.org/>|<https://github.com/facebookresearch/habitat-lab>|
+|Embodied Question Answering|Abhishek Das, Samyak Datta, Georgia Gkioxari, Stefan Lee, Devi Parikh, Dhruv Batra|Task, Model|Vision: CNN, Language: LSTMs, Navigation: LSTM(planner) and MLP(controller)|Embodied Question Answering|Baseline available in Habitat, <https://embodiedqa.org/>|<https://github.com/facebookresearch/EmbodiedQA>| 
+|Multi-Target Embodied Question Answering|Licheng Yu, Xinlei Chen, Georgia Gkioxari, Mohit Bansal, Tamara L. Berg, Dhruv Batra|Task, Model|Question-to-Program Generator: templated, Navigation:CNN Feature Extrator, LSTM, Controller: CNN, LSTM, VQA Module: FC + ReLU| Multitarget EQA|<https://youtu.be/pK5gYk9OgjE>||
+|Visual question answering: A survey of methods and datasets|Qi Wu, Damien Teney, Peng Wang, Chunhua Shen, Anthony Dick, Anton van den Hengel|Survey: Approaches, Datasets||VQA|||
+|CLEVR: A Diagnostic Dataset for Compositional Language and Elementary Visual Reasoning|Justin Johnson, Li Fei-Fei, Bharath Hariharan, C. Lawrence Zitnick, Laurens van der Maaten, Ross Girshick|Dataset||Visual Question Answering|<https://cs.stanford.edu/people/jcjohns/clevr/>||
+|Beyond the Nav-Graph: Vision-and-Language Navigation in Continuous Environments|Jacob Krantz, Erik Wijmans, Arjun Majumdar, Dhruv Batra, and Stefan Lee|||||<https://github.com/jacobkrantz/VLN-CE>|
+|Robot Navigation with Language Pretraining and Stochastic Sampling|Xiujun Li, Chunyuan Li, Qiaolin Xia, Yonaton Bisk, Asli Celikyilmaz, Jianfeng Gao, Noah A. Smith, Yejin Choi|Pre-training|LSTM/GPT/BERT, LSTM|Vision and Language Navigation||<https://github.com/xjli/r2r_vln>|
+|Learning to Explore Using Active Neural Slam|Devendra Singh Chaplot, Dhiraj Ghandi, Saurabh Gupta, Abhinav Gupta, Ruslan Salakhutdinov|Model||PointGoal|||
+|Object Goal Navigation using Goal-Oriented Semantic Exploration|Devendra Singh Chaplot, Dhiraj Ghandi, Abhinav Gupta, Ruslan Salakhutdinov|Model||ObjectNav|||
+|MAttNet: Modular Attention Network for Referring Expression Comprehension|Licheng Yu, Zhe Lin, Xiaohui Shen, Jimei Yang, Xin Lu, Mohit Bansal, Tamara L. Berg|Framework/Model|Language Attention Network: Embedding LSTM, FC layer + visual modules|Referring Expressions||<https://github.com/lichengunc/MAttNet>|
+
