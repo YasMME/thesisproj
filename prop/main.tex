@@ -4,7 +4,7 @@
 
 \usepackage[utf8]{inputenc}
 
-\usepackage{natbib}
+%\usepackage{natbib}
 \usepackage{hyperref}
 
 \usepackage{graphicx}
@@ -64,39 +64,29 @@
 \section{Introduction}
 Robots have the potential to be useful in many fields–they can perform tasks
 that are dangerous for humans, as well as tasks that are simply tedious. These
-robots are often operated based on pre-defined actions, or remotely. The potential increases in efficiency from being able to give a goal/task in natural language and have the robot interpret and determine how to carry out this task are huge.
+robots are often operated based on pre-defined actions, or remotely. The potential increases in efficiency from being able to give a goal/task in natural language and have the robot interpret and determine how to carry out this task are huge. % SD 2021-02-16 09:03:48 +0100: Also add answer question answering to cover both scenarios.
 This would make robots more accessible generally, since it would reduce the
 learning curve for operating them. A patient in a hospital would likely find it much easier to simply tell the robot 'I need water', rather than having to find the 'water' option on some sort of touchscreen interface. It also would support situations where the instructions being given are too complex for this kind of interface--one example of this is human-robot teaming, in which groups of humans and robots cooperate to achieve tasks in situations such as disaster scenarios\cite{Kruijff-Korbayova:2015aa}. Communication in natural language can facilitate organisation where all of the humans are working with all of the robots, rather than an individual human having control over one or many robots. Situations like this require complex understanding of natural language instructions. 
 
 % SD 2020-12-11 21:10:09 +0100: There may be cases where even more complex understanding of the natural language instructions is required which would be very complex for the person so "describe" using touch screen interface. For example, human-robot teaming: https://link.springer.com/article/10.1007/s13218-015-0352-5 \cite{Kruijff-Korbayova:2015aa} and There is a lot of research in this area how robots and humans could work together, see for example the references to this paper I found https://arxiv.org/pdf/2009.00288.pdf
 
-% SD 2020-12-11 21:10:09 +0100: There may be cases where even more complex understanding of the natural language instructions is required which would be very complex for the person so "describe" using touch screen interface. For example, human-robot teaming: https://link.springer.com/article/10.1007/s13218-015-0352-5 \cite{Kruijff-Korbayova:2015aa} and There is a lot of research in this area how robots and humans could work together, see for example the references to this paper I found https://arxiv.org/pdf/2009.00288.pdf
+% SD 2021-02-16 09:04:43 +0100: Present some examples of dialogues that we would like to model here.
 
 \section{Context}
 \subsection{Navigation}
-Navigation is a common task for robots, a subset of instruction following; applications for robots include moving through a space recording or streaming video back to a human and collecting objects in a space to deliver to someone in a different space. The task can be split into two main challenges: self-localization and mapping\cite{Wallgrun:2007zr}. 
+Navigation is a common task for robots, a subset of instruction following; applications for robots include moving through a space recording or streaming video back to a human and collecting objects in a space to deliver to someone in a different space. The task can be split into two main challenges: self-localization and mapping \cite{Wallgrun:2007zr}. 
+
+% SD 2021-02-16 09:06:20 +0100: Distinguish between navigation where the robot only relies on the observations to find a path trough its environment (described here) and navigation where natural language component is added and the robot needs to interpret natural language instructions as well as navigate in its environment.
+
+% SD 2020-12-11 21:37:27 +0100: Here you could expand that there is active research on how humans navigate and reason in space. Perhaps a paper by Diedrich Wolter: https://www.sfbtr8.spatial-cognition.de/project/r3/material/QSR_Challenges.pdf \cite{Wallgrun:2007zr}
 
 \subsection{Grounding}
 A key challenge in creating robots that can interact with humans in natural language is grounding--connecting an external object to a word or phrase. This challenge also includes linking of actions to words. For example, what does 'turn' mean? Grounding is a challenge in a variety of tasks, such as image captioning, where models need to produce labels for both the objects in the image, and the objects' interactions with each other in natural language\cite{karpathy2014captioning}.
 
 % SD 2020-12-11 21:25:12 +0100: Actually, the notion of grounding language in perception has been explored in robotics first and then moved into image captioning which is a much younger task: https://canvas.gu.se/courses/36167/assignments/75554 and https://canvas.gu.se/courses/36167/assignments/76897
-<<<<<<< HEAD
-
-There is also currently research in grounding through interaction with the environment. Hermann et. al present a simulated embodied agent learning grounded language through a combination of unsupervised and reinforcement learning, with minimal prior knowledge\cite{hermann2017grounded}. Another approach with minimal prior knowledge is presented by Thomason et. al, where the robot learns through dialogue with a human\cite{thomason2019grounded}.
-
-\subsection{Navigation}
-Navigation is a common task for robots, a subset of instruction following; applications for robots include moving through a space recording or streaming video back to a human and collecting objects in a space to deliver to someone in a different space.
-
-% SD 2020-12-11 21:37:27 +0100: Here you could expand that there is active research on how humans navigate and reason in space. Perhaps a paper by Diedrich Wolter: https://www.sfbtr8.spatial-cognition.de/project/r3/material/QSR_Challenges.pdf \cite{Wallgrun:2007zr}
-
-\subsubsection{Dialogue}
-Navigation based on dialogue is a current area of active research--datasets for a dialogue based navigation tasks are often collected as human-human dialogues, which are then used to train agents in replay or supervised learning scenarios. 
-=======
 
 Image captioning is a fairly new task, but grounding in the field of robotics has been an area of active research for a long time. In 2002, Lauria et al. presented a project in which a robot was given natural language instructions, which were mapped to procedures of identified primitives, such as 'turn'\cite{lauria2002}. More recently, Hermann et al. presented a simulated embodied agent learning grounded language through a combination of unsupervised and reinforcement learning, with minimal prior knowledge\cite{hermann2017grounded}. Another approach with minimal prior knowledge was presented by Thomason et al., where the robot learns through dialogue with a human\cite{thomason2019grounded}.
->>>>>>> b07e62458db0aa936c4fac133634e8781dbbfba0
 
-% SD 2020-12-11 21:37:27 +0100: Here you could expand that there is active research on how humans navigate and reason in space. Perhaps a paper by Diedrich Wolter: https://www.sfbtr8.spatial-cognition.de/project/r3/material/QSR_Challenges.pdf \cite{Wallgrun:2007zr}
 
 %\subsubsection{Dialogue}
 %Navigation based on dialogue is a current area of active research--datasets for a dialogue based navigation tasks are often collected as human-human dialogues, which are then used to train agents in replay or supervised learning scenarios. 
@@ -114,7 +104,11 @@ Visual Question Answering is a task in which an agent must answer a question bas
 \subsection{Embodied Question Answering}
 Embodied Question Answering combines the navigation and VQA tasks into one: the embodied agent must navigate to find the object that the question refers to\cite{embodiedqa}. For example, for the question 'What color is the refrigerator?' the agent must identify where the fridge is most likely to be, the kitchen, and navigate there before identifying the fridge and answering the color. This task has been expanded to Multi-Target Embodied Question Answering, in which questions can include multiple targets, allowing for comparison questions such as 'is the oven in the kitchen the same color as the sink in the bathroom?'\cite{eqa_multitarget}. Current approaches for this task use templated questions, limiting the question types that can be asked. The EQA dataset includes nine question types: location, color, color\_room, preposition, existence, logical, count, room\_count, and distance, though the EQA-V1 dataset, used for the experiments by Das et.al includes only the first five question types\cite{embodiedqa}. The MT-EQA dataset adds six comparison question types\cite{eqa_multitarget}.
 
+% SD 2021-02-16 09:16:52 +0100: But the templates are only to create a dataset. The EQA task is then learned with ML and the answers are generated or rather classified.
+
 % SD 2020-12-11 21:42:35 +0100: Similarly, a lot of research has been done on the language side and dialogue. How humans generate descriptions in conversation that are understandable by conversational partners? What landmarks will they use? How will they structure the route description: it is unlikely that they will give a complex description (as you would get from Google straight away). The description will be dependent on who the conversational partner is and what task they are involved in which further complicated computational modelling on the natural language processing side. Perhaps, \cite{Tenbrink:2010qf,Fellner:2017aa,Janarthanam:2012aa}
+
+% SD 2021-02-16 09:17:49 +0100: VQA and E-VQA tasks are actually simplifications of dialogue (which in general would contain several more question types). These tasks have developed with end-to-end deep learning. Modelling dialogies with robots goes way back to the Shaky and Flaky and Winograd's Shrdlu but where language was represented with a rule-based system. Some references here: Winograd:1972, Kruijff:2007, Dobnik:2009dz Hence, it would be nice to conclude here with the previous section on dialogue that is now commented out above.
 
 \subsection{Simulation}
 Working with embodied agents is resource intensive and makes reproducibility difficult to impossible, so simulation is beneficial for research. Within simulation, environments can be kept consistent, allowing for both reproducibility of an experiment and for comparison of different systems/methods. Simulation also allows for the reuse of datasets of human descriptions or labels, which are time-consuming and expensive to produce.  
@@ -124,37 +118,36 @@ AI Habitat is a simulation platform for working with embodied AI\cite{habitat19i
 % SD 2020-12-11 21:35:47 +0100: You could also expand the point about reproducibility earlier that working with simulation environments has benefits for research since different systems can be compared, and datasets of human descriptions (which are expensive to obtain) reused.
 
 \section{Goals and Challenges}
-<<<<<<< HEAD
-For this project, the overarching question is: how can information learned in other contexts be used to improve performance of an agent in a navigation task? % SD 2020-12-11 22:04:22 +0100: Given this research quetsion it is good that you give more background about the challenges for navigation instructions as I commeneted above.
-=======
+
 For this project, the overarching question is: how can information learned in other contexts be used to improve performance of an agent in an embodied question answering task? % SD 2020-12-11 22:04:22 +0100: Given this research quetsion it is good that you give more background about the challenges for navigation instructions as I commeneted above.
 
 Since EQA consists of multiple, modular, tasks, it seems like a good candidate for transfer learning. For the task of identifying where to go to find an object, humans use a lot of information that they've learned from other contexts, such as, what room people typically use an item in. Identification of colors can also be learned in non-embodied context, so that would be another place for pre-training to give the agent prior knowledge. 
->>>>>>> b07e62458db0aa936c4fac133634e8781dbbfba0
 
 In Das et. al, they report the agent entering the target room 65\% of the time when the agent is spawned 10 actions away from the target, and 52\% when the agent is spawned 50 actions away\cite{embodiedqa}. This shows a place for improvement. These numbers could mean either that the navigator is in itself only partially successful, or that the agent is having difficulty determining which rooms to check when given questions that do not include the room, or a combination of both of those things. The goal is to determine how pre-training could improve this performance. \todo{Stopping Criteria}
 
-<<<<<<< HEAD
-Also, datasets for dialogue navigation take a long time to collect, since they are
-generated in real time, and the navigation tasks can take a while. % SD 2020-12-11 21:58:38 +0100: The bottle-neck is mainly due to human descriptions. These take time and several thousand route instructions would be required for an unsupervised approach.
-Because of this, many navigation datasets are small, which limits the agent's knowledge, so being able to use disparate datasets would be beneficial. For example, maybe an agent could learn colors and positions from a dialogue about items on a table, and then would be able to apply that knowledge from the beginning when presented with dialogue navigating through a house.
+% SD 2021-02-16 09:32:02 +0100: We could investigate the the sucess of VQA when the agent is trained only with information from the domain/environment. Then we progressively add information from different domains in the form of pre-trained feature encoders (e.g. visual features from object classifiers trained on images or word embeddings and language models encoding information about the world) or top-down feature encoders (e.g. to represent geometric information between the embedded encoders). The goal is to show that a system utilising such external knowlede perform better over the systems that have been trained on only the task specific knowledge in an end-to-end fashion.
 
-% SD 2020-12-11 22:06:15 +0100: We could train the system on corpora of dialogue from a different domain and then fine tune it on this domain. This way the system would already know something about the interaction strategies of humans; the leanring would then be adapting this knowledge to the route instruction scenario.
-=======
+% SD 2021-02-16 09:46:10 +0100: Koen also raises an issue of the concrete % of improved performance. This is hard in NLP. It seems to be easy to achieve large improvements up tom 70% but then improvements become small, some papers are claiming improvements that are less that 1%. This depends on the task and really on a dataset (whose context in which it was collected effectively defines a new variation of a task). The improvements are not linear. We could also run statistical tests to compare the results if these are small.
+
 %Also, datasets for dialogue navigation take a long time to collect, since humans are generating the descriptions in real time, and humans are not necessarily very efficient. For an unsupervised learning approach, several thousand route instructions would be needed. % SD 2020-12-11 21:58:38 +0100: The bottle-neck is mainly due to human descriptions. These take time and several thousand route instructions would be required for an unsupervised approach.
 %Because of this, many navigation datasets are small, which limits the agent's knowledge, so being able to use disparate datasets would be beneficial. For example, maybe an agent could learn colors and positions from a dialogue about items on a table, and then would be able to apply that knowledge from the beginning when presented with dialogue navigating through a house. An agent could be trained on a corpora of dialogue from a different domain, and from this learn about human interaction strategies. The system could then be fine tuned on dialogue from the navigation domain, and adapt the knowledge about interaction to understanding route instructions. 
->>>>>>> b07e62458db0aa936c4fac133634e8781dbbfba0
 
 % SD 2020-12-11 22:06:15 +0100: We could train the system on corpora of dialogue from a different domain and then fine tune it on this domain. This way the system would already know something about the interaction strategies of humans; the leanring would then be adapting this knowledge to the route instruction scenario.
 
 %Another use for transfer learning is in the fact that a goal within this research is for these human-human dialogues to become human-robot dialogues, more flexible than those described in \cite{thomason2019grounded}. \todo{add mention of EQA templating approach} Transfer learning could aid in teaching the robot grammar and vocabulary, rather than limiting its knowledge of language to the navigation dialogue, making it easier to create a robot that could generate its own responses to instructions. 
 
 \section{Approach}
-I plan to use Habitat to simulate my navigation agents and environment, and use the EQA baseline available in habitat-lab as a starting point. The baseline consists of a feature extraction CNN, a VQA model, and a Navigation model (which consists of a planner and a controller), all of which can be trained independently. (Since it is modular, sections could also be replaced.) Task and scene datasets for Matterport3D are also available. Code for generating EQA-v1 questions is also available, but designed for use with SUNCG, which is no longer supported, and so would require modification to be useable\cite{embodiedqa}. I will need to identify potential datasets for background/external knowledge such as navigation datasets in other scenarios (outside, for example) or static VQA datasets. 
+I plan to use Habitat to simulate my navigation agents and environment, and use the EQA baseline available in habitat-lab as a starting point. The baseline consists of a feature extraction CNN, a VQA model, and a Navigation model (which consists of a planner and a controller), all of which can be trained independently. (Since it is modular, sections could also be replaced.) Task and scene datasets for Matterport3D are also available. Code for generating EQA-v1 questions is also available, but designed for use with SUNCG, % SD 2021-02-16 09:38:08 +0100: explain what SUNCG is and reference
+which is no longer supported, and so would require modification to be useable\cite{embodiedqa}. I will need to identify potential datasets for background/external knowledge such as navigation datasets in other scenarios (outside, for example) or static VQA datasets. 
+
+% SD 2021-02-16 09:38:57 +0100: For datasets see my previous comment.
 
 Next would be to train the habitat-baseline EQA. Next would be to pre-train the VQA and navigation modules on other datasets, and compare to the baseline. Modification to individual modules might be required to allow pre-training on data from different contexts. 
 
-Overall performance can be calculated as simple accuracy with regards to the ground-truth answers, since the question answering model is classification across 172 answers. However, since the EQA model actually consists of 3 separate models, they can also be evaluated separately. For navigation, Das et. al identify a number of evaluation metrics. For distance they used the final distance to the target, the change in distance to the target over the episode, and the minimum distance to the target at any point in the episode. They also identified the percentage of questions where the agent ended in the room containing the target, the percentage in which the agent entered the room with the target at any point during the episode, and the percentage of episodes in which the agent stopped to answer the question before the maximum number of actions was reached. 
+Overall performance can be calculated as simple accuracy with regards to the ground-truth answers, since the question answering model is classification across 172 answers. However, since the EQA model actually consists of 3 separate models, they can also be evaluated separately. For navigation, Das et. al identify a number of evaluation metrics. For distance they used the final distance to the target, the change in distance to the target over the episode, and the minimum distance to the target at any point in the episode. They also identified the percentage of questions % SD 2021-02-16 09:39:45 +0100: instructions?
+where the agent ended in the room containing the target, the percentage in which the agent entered the room with the target at any point during the episode, and the percentage of episodes in which the agent stopped to answer the question before the maximum number of actions was reached. 
+
+% SD 2021-02-16 09:41:17 +0100: VQA tasks have in majority cases been taken as a classification of answers which is strange for NLP. The answer should really be generated as a sequence of words. There are a few approaches now that do this (which is of course more complicated). Then evaluation becomes slightly more complicated also, normally measures such as BLEU, METEOR and ROUGE are used to do this.
 
 %datasets of learning information like position in non-navigation scenarios ('what is to the left of the blue ball in this picture?', for example), or general natural language dialogues.
 
@@ -169,13 +162,14 @@ Overall performance can be calculated as simple accuracy with regards to the gro
 % SD 2020-12-11 22:08:22 +0100: Looks good! Good luck!
 
 
-<<<<<<< HEAD
-% SD 2020-12-11 22:08:22 +0100: Looks good! Good luck!
+\section{References}
 
-%\section{References}
-=======
->>>>>>> b07e62458db0aa936c4fac133634e8781dbbfba0
 \bibliographystyle{ieeetr}
 \bibliography{references}
 
 \end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
