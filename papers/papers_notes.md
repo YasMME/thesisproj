@@ -10,4 +10,6 @@
 |Learning to Explore Using Active Neural Slam|Devendra Singh Chaplot, Dhiraj Ghandi, Saurabh Gupta, Abhinav Gupta, Ruslan Salakhutdinov|Model||PointGoal|||
 |Object Goal Navigation using Goal-Oriented Semantic Exploration|Devendra Singh Chaplot, Dhiraj Ghandi, Abhinav Gupta, Ruslan Salakhutdinov|Model||ObjectNav|||
 |MAttNet: Modular Attention Network for Referring Expression Comprehension|Licheng Yu, Zhe Lin, Xiaohui Shen, Jimei Yang, Xin Lu, Mohit Bansal, Tamara L. Berg|Framework/Model|Language Attention Network: Embedding LSTM, FC layer + visual modules|Referring Expressions||<https://github.com/lichengunc/MAttNet>|
-
+|Blindfold Baselines for Embodied QA|Ankesh Anand, Eugene Belilovsky, Kyle Kastner, Hugo Larochelle, Aaron Courville|Are Embodied QA tasks actually using the visual input?||Embodied QA||<https://github.com/ankeshanand/blindfold-baselines-eqa>|
+|Situated Dialogue and Spatial Organization: What, Where... and Why?|Geert-Jan M. Kruijff, Hendrik Zender, Patric Jensfelt, and Henrik I. Christensen|Navigation, Human-Robot Interaction||Human Augmented Mapping, Situated Dialogue, Question Answering|||
+|Robots That Use Language|Stefanie Tellex, Nakul Gopalan, Hadas Kress-Gazit, Cynthia Matuszek|Summary Paper|||Contains table of language grounding/robotics datasets with links||
