@@ -73,14 +73,23 @@ Hypotheses:
  
 \subsection{Limitations}
 \todo{This chapter describes what issues will not be dealt with in the work.}
-The main dataset of questions and answers available for EQA was automatically generated, and may contain some errors. Certain colors, such as brown, are also over represented in the dataset. \todo{add image of sofa, discuss. Continuing to use it because it's the only one I've found that works in the habitat simulator.} However, I plan to work with this dataset as is, rather than attempting to balance presence of colors, or manually remove incorrect question answer pairs. This is both due to time limitations, and due to not wanting to introduce artificial balance--many things in houses are made of wood, and are therefore brown. It's not necessarily a bad thing for the system to expect tables to be brown, as long as it is also actually looking for a table to answer the question. \\
-A dataset was collected using humans via Amazon Mechanical Turk, but it relies on a house dataset that is no longer available. 
+The main dataset of questions and answers available for EQA was automatically generated, and may contain some errors. One example of this is shown in Fig.~\ref{fig:err_ex}, in which a VQA model answered that the sofa in the living room is tan, but the ground truth answer is that it is yellow. However, looking at the image, I see a tan sofa and a yellow armchair. It seems that an error was likely made in the automatic question/answer generation, identifying the armchair as a sofa, but the model is not making the same error. \\
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{ckpt_0_121_image.jpg}
+	\caption{Error Example}
+	\label{fig:err_ex}
+\end{figure}
+Certain colors, such as brown, are also over represented in the dataset. However, I plan to work with this dataset as is, rather than attempting to balance presence of colors, or manually remove incorrect question answer pairs. This is both due to time limitations, and due to not wanting to introduce artificial balance--many things in houses are made of wood, and are therefore brown. It's not necessarily a bad thing for the system to expect tables to be brown, as long as it is also actually looking for a table to answer the question. \\
+A dataset was collected using humans via Amazon Mechanical Turk, but it relies on a house dataset that is no longer available. \\
+\todo{classification vs generation}
  
 
 \section{Methodology}
 \todo{The methodology chapter describes how the work is structured. It includes workflows, design of experiments and use of various data collection methods.}
 \todo{mltgpu, metrics under consideration, blindfolded check after every change, enable the semantic sensor during VQA (talk about semantic annotations from matterport), implement look-around, enable the semantic sensor during navigation, discussion of other semantic options}
-I am starting with the Embodied Question Answering baseline in Habitat-Lab, which consists of three parts, a CNN for initial feature extraction, a question answering module, and a navigation module, called Pacman\cite{habitat}\cite{embodiedqa}. I am using the EQA task dataset, which was created using code to automatically generate questions and answers to correspond with scenes in the Matterport3D dataset\cite{matterport}.
+
+I am starting with the Embodied Question Answering baseline in Habitat-Lab, which consists of three parts, a CNN for initial feature extraction, a question answering module, and a navigation module, called Pacman\cite{embodiedqa}. I am using the EQA task dataset, which was created using code to automatically generate questions and answers to correspond with scenes in the Matterport3D dataset\cite{matterport}. \\
 
 \section{Schedule}
 \begin{ganttchart}[
