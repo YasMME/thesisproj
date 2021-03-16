@@ -21,6 +21,7 @@
 \counterwithout{figure}{section}
 
 \usepackage{pgfgantt}
+\usepackage{pdflscape}
 
 
 
@@ -80,7 +81,8 @@ Hypotheses:
 \begin{outline}
 	\1 The VQA model does consider the visual features when answering the questions.
 		\2 If true, additional view points can improve performance in the VQA task. 
-	\1 Transfer learning to incorporate pre-trained features in feature extraction can improve performance on both the VQA and Navigation tasks.
+	\1 Additional semantic information can improve performance in the VQA task.
+	\1 Additional semantic information can improve performance in the navigation task. 
 \end{outline}
 
 
@@ -94,8 +96,14 @@ The dataset of questions and answers for EQA in Habitat was automatically genera
 \end{figure}
 Certain colors, such as brown, are also over represented in the dataset. However, I plan to work with this dataset as is, rather than attempting to balance presence of colors, or manually removing incorrect question answer pairs. This is both due to time limitations, and due to not wanting to introduce artificial balance--many things in houses are made of wood, and are therefore brown. It's not necessarily a bad thing for the system to expect tables to be brown, as long as it is also actually looking for a table to answer the question. \\
 A dataset was collected using humans via Amazon Mechanical Turk, but it relies on a house dataset that is no longer available. \\
-\todo{classification vs generation}
- 
+VQA can be designed as either a classification task or a generation task. As a classification task, the model predicts from a set of possible answers. This can lead to some odd answers, such as in Fig.~\ref{fig:Green}, where the ground truth answer wasn't in the answer set, and the model predicted a color as a room. This type of error is less likely with a generation model, but a generation model is also more difficult to implement. I plan to work with the classification model, since the goal is to find places where information injection can help generally, rather than to continue to develop this model specifically. \\
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{../error_images/green_room.png}
+	\caption{Prediction of 'Green' as a room}
+	\label{fig:Green}
+\end{figure}
 
 \section{Methodology}
 I am working with AI Habitat, a simulation platform for working with embodied AI\cite{habitat19iccv}. It consists of two parts, Habitat-Sim, the 3D simulator, and Habitat-Lab, the library for embodied AI development. I am using the Matterport3D dataset, a dataset of real interiors with human annotation of objects, as my scene dataset\cite{matterport}. \\
@@ -103,7 +111,9 @@ I am starting with the Embodied Question Answering baseline in Habitat-Lab, whic
 I am working in a GPU cluster through mlt, but also am going to create a mini-version of the dataset that I can use to run tests locally, although fully training or evaluating will need to happen on a GPU, due to the size of the dataset. \\
 I will be considering two metrics for the VQA task: mean rank and accuracy. For the navigation task, I will consider the percentage of questions in which the agent ended in the room containing the target. \\
 The first task is to determine if the VQA model is considering the visual input when answering the questions. To do this, I will run evaluation normally, where the VQA model gets the images, and "blindfolded", where the VQA does not. To do this, I have duplicated a method that converts the images to an array to input to the model, and modified it to produce an array of zeros instead. Preliminary results with this suggest that the VQA model is considering the visual features--it performs worse on evaluation when blindfolded. This is interesting, because another student performed a similar test in a course project, where they gave the VQA wrong images, and they did not see decrease in performance. I plan to implement that method of blindfolding as well, and compare the results between the two methods. \\
-Assuming that the model is considering visual input, the next step is to give the model more variety in the viewpoints it is considering, since the shortest path navigation being learned may not give the best views for answering the question\cite{blindfolded}. I plan to do this by implementing a look-around procedure for the agent to do at the end of each shortest path navigation. Custom actions can be defined in habitat, so I plan to implement special turning actions with larger movement than the standard actions, and then have the agent perform these at the end of each navigation during training. The limited views of the shortest path can be seen in Fig.~\ref{fig:viewpoints}, which shows the last five steps the agent took.
+Next, I plan to 'enable' the semantic sensor in habitat-sim, which reads object labels from annotations in the dataset, and pass these semantic observations to the VQA model along with the RGB observations. I plan to do the same thing with the Navigation model. \\
+Assuming that the model is considering visual input, one of the experiments I want to conduct is to give the model more variety in the viewpoints it is considering, since the shortest path navigation being learned may not give the best views for answering the question\cite{blindfolded}. I plan to do this by implementing a look-around procedure for the agent to do at the end of each shortest path navigation. Custom actions can be defined in habitat, so I plan to implement special turning actions with larger movement than the standard actions, and then have the agent perform these at the end of each navigation during training. The limited views of the shortest path can be seen in Fig.~\ref{fig:viewpoints}, which shows the last five steps the agent took. 
+
 
 \begin{figure}[h]
 	\centering
@@ -112,37 +122,49 @@ Assuming that the model is considering visual input, the next step is to give th
 	\label{fig:viewpoints}
 \end{figure}
 
-The next task is to incorporate pre-training in the CNN, to test if this improves performance, both in the VQA task, and in the navigation task, both of which rely on the same CNN for feature extraction and segmentation. My current plan for this is to stack the current CNN on a pretrained network like vgg19, but this may change. \\
-There is also a semantic sensor within habitat that could be enabled for the VQA and navigation tasks, which reads semantic annotations from the simulated scene. One concern with this is that it might simply make up for weaknesses in the CNN, which is meant to be doing segmentation. 
 
 \section{Schedule}
+
+
+
 \begin{ganttchart}[
 	hgrid=true,
 	vgrid=true,
 	bar/.append style={fill=gray},
 	canvas/.append style={fill=none},
-	link/.append style={thick}
-	]{1}{17}
-	\gantttitle{Schedule}{17} \\
-	\gantttitlelist{5, ..., 21}{1} \\
+	link/.append style={thick},
+	y unit chart = .75cm
+	]{1}{18}
+	\gantttitle{Schedule}{18} \\
+	\gantttitlelist{5, ..., 22}{1} \\
 	\ganttbar{Getting GPU Access}{2}{2} \\
-	\ganttbar{Attend presentation on blindfolding}{2}{2} \\
+	\ganttbar[bar/.append style={fill=cyan}]{Attend presentation on blindfolding}{2}{2} \\
 	\ganttbar{Learning Habitat}{1}{6} \\
-	\ganttbar{Writing Seminar I}{2}{2} \\
+	\ganttbar[bar/.append style={fill=cyan}]{Writing Seminar I}{2}{2} \\
 	\ganttbar{Train\&Eval.Baseline, blindfolded\&normal}{6}{7} \\
 	\ganttbar{Make Mini-Dataset}{7}{7} \\
-	\ganttbar{Implement Look Around}{8}{9} \\
-	\ganttbar{Incorporate pre-training in the CNN}{9}{11} \\
+	\ganttbar{Enable Semantic Sensor During VQA}{7}{9} \\
+	\ganttbar{Implement Look Around}{8}{10} \\
+	\ganttbar[bar/.append style={fill=cyan}]{Halftime Report}{9}{9} \\
+	\ganttbar{Enable Semantic Sensor During Nav}{10}{11} \\
 	\ganttbar[bar/.append style={fill=red}]{GPU Off}{8}{8} \\
-	\ganttbar[bar/.append style={fill=cyan}]{Writing Seminar II}{12}{14} \\
-	\ganttbar{Writing!}{14}{16} \\
+	\ganttbar{Writing}{12}{13} \\
+	\ganttbar[bar/.append style={fill=cyan}]{Writing Seminar II}{14}{15} \\
+	\ganttbar{Editing}{14}{15} \\
+	\ganttbar[bar/.append style={fill=cyan}]{Thesis to opponent}{16}{16} \\
+	\ganttbar[bar/.append style={fill=cyan}]{Presentation \& Opposition}{17}{17} \\
+	\ganttbar[bar/.append style={fill=cyan}]{Final Report Submission}{18}{18}
 	\begin{scope}[on background layer]
 	\ganttlink{elem0}{elem4}
 	\ganttlink{elem4}{elem6}
 	\ganttlink{elem4}{elem7}
+	\ganttlink{elem4}{elem9}
+	\ganttlink{elem11}{elem13}
+	\ganttlink{elem13}{elem14}
+	\ganttlink{elem14}{elem15}
 	\end{scope}
 \end{ganttchart}
-\todo{presentation dates?}
+Blue bars are scheduled events \& deadlines, grey are tasks, and red are known interruptions. 
 
 
 \section{Risk Analysis and Ethical Considerations}
