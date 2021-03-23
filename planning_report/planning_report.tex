@@ -55,7 +55,8 @@
   
 \section{Introduction}
 \subsection{Background}
-Robots are able to perform tasks that are tedious or even dangerous for humans, giving them the potential to be useful in a variety of fields. Robots working within human areas are often operated based on pre-defined actions, or remotely. Being able to give a robot instructions and interact with it in natural language would allow for increased efficiency. \\
+Robots are able to perform tasks that are tedious or even dangerous for humans, giving them the potential to be useful in a variety of fields. Robots working within human areas are often operated based on pre-defined actions, or remotely. Being able to give a robot instructions and interact with it in natural language would allow for increased efficiency. 
+
 One example of this would be with household agents, which move within a home and help carry out tasks. An average user is unlikely to be a robotics expert, and so being able to interact with the agent in a similar way to how one would with another person would be ideal.
 
 \begin{verbatim}
@@ -74,29 +75,32 @@ A: In the office.
 \end{verbatim}
 
 \subsection{Aim}
-The task in which an embodied agent is asked a question and must move within its surroundings in order to answer it is called Embodied Question Answering (EQA). EQA is essentially a combination of two tasks, navigation and Visual Question Answering (VQA).\\
-The aim of this thesis is to identify ways in which prior or extra knowledge can be used to improve model performance in an EQA task. 
+The task in which an embodied agent is asked a question and must move within its surroundings in order to answer it is called Embodied Question Answering (EQA). EQA is essentially a combination of two tasks, navigation and Visual Question Answering (VQA).
+
+The aim of this thesis is to identify ways in which prior or extra knowledge can be used to improve model performance in the VQA component of an EQA task.
 
 Hypotheses: 
 \begin{outline}
 	\1 The VQA model does consider the visual features when answering the questions.
 		\2 If true, additional view points can improve performance in the VQA task. 
 	\1 Additional semantic information can improve performance in the VQA task.
-	\1 Additional semantic information can improve performance in the navigation task. 
 \end{outline}
 
 
 \subsection{Limitations}
-The dataset of questions and answers for EQA in Habitat was automatically generated, and may contain some errors. One example of this is shown in Fig.~\ref{fig:err_ex}, in which a VQA model answered that the sofa in the living room is tan, but the ground truth answer is that it is yellow. However, looking at the image, I see a tan sofa and a yellow armchair. It seems that an error was likely made in the automatic question/answer generation, identifying the armchair as a sofa, but the model is not making the same error. \\
+The dataset of questions and answers for EQA in Habitat was automatically generated, and may contain some errors. One example of this is shown in Fig.~\ref{fig:err_ex}, in which a VQA model answered that the sofa in the living room is tan, but the ground truth answer is that it is yellow. However, looking at the image, I see a tan sofa and a yellow armchair. It seems that an error was likely made in the automatic question/answer generation, identifying the armchair as a sofa, but the model is not making the same error. 
+
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{../error_images/ckpt_0_121_image.jpg}
 	\caption{Error Example}
 	\label{fig:err_ex}
 \end{figure}
-Certain colors, such as brown, are also over represented in the dataset. However, I plan to work with this dataset as is, rather than attempting to balance presence of colors, or manually removing incorrect question answer pairs. This is both due to time limitations, and due to not wanting to introduce artificial balance--many things in houses are made of wood, and are therefore brown. It's not necessarily a bad thing for the system to expect tables to be brown, as long as it is also actually looking for a table to answer the question. \\
-A dataset was collected using humans via Amazon Mechanical Turk, but it relies on a house dataset that is no longer available. \\
-VQA can be designed as either a classification task or a generation task. As a classification task, the model predicts from a set of possible answers. This can lead to some odd answers, such as in Fig.~\ref{fig:Green}, where the ground truth answer wasn't in the answer set, and the model predicted a color as a room. This type of error is less likely with a generation model, but a generation model is also more difficult to implement. I plan to work with the classification model, since the goal is to find places where information injection can help generally, rather than to continue to develop this model specifically. \\
+Certain colors, such as brown, are also over represented in the dataset. However, I plan to work with this dataset as is, rather than attempting to balance presence of colors, or manually removing incorrect question answer pairs. This is both due to time limitations, and due to not wanting to introduce artificial balance--many things in houses are made of wood, and are therefore brown. It's not necessarily a bad thing for the system to expect tables to be brown, as long as it is also actually looking for a table to answer the question. 
+
+A dataset was collected using humans via Amazon Mechanical Turk, but it relies on a house dataset that is no longer available. 
+
+VQA can be designed as either a classification task or a generation task. As a classification task, the model predicts from a set of possible answers. This can lead to some odd answers, such as in Fig.~\ref{fig:Green}, where the ground truth answer wasn't in the answer set, and the model predicted a color as a room. This type of error is less likely with a generation model, but a generation model is also more difficult to implement. I plan to work with the classification model, since the goal is to find places where information injection can help generally, rather than to continue to develop this model specifically. 
 
 \begin{figure}[h]
 	\centering
@@ -106,14 +110,17 @@ VQA can be designed as either a classification task or a generation task. As a c
 \end{figure}
 
 \section{Methodology}
-I am working with AI Habitat, a simulation platform for working with embodied AI\cite{habitat19iccv}. It consists of two parts, Habitat-Sim, the 3D simulator, and Habitat-Lab, the library for embodied AI development. I am using the Matterport3D dataset, a dataset of real interiors with human annotation of objects, as my scene dataset\cite{matterport}. \\
-I am starting with the Embodied Question Answering baseline in Habitat-Lab, which consists of three parts, a CNN for initial feature extraction, a question answering module, and a navigation module, called Pacman\cite{embodiedqa}. I am using the EQA task dataset, which was created using code to automatically generate questions and answers to correspond with scenes in the Matterport3D dataset\cite{eqa_matterport}. \\
-I am working in a GPU cluster through mlt, but also am going to create a mini-version of the dataset that I can use to run tests locally, although fully training or evaluating will need to happen on a GPU, due to the size of the dataset. \\
-I will be considering two metrics for the VQA task: mean rank and accuracy. For the navigation task, I will consider the percentage of questions in which the agent ended in the room containing the target. \\
-The first task is to determine if the VQA model is considering the visual input when answering the questions. To do this, I will run evaluation normally, where the VQA model gets the images, and "blindfolded", where the VQA does not. To do this, I have duplicated a method that converts the images to an array to input to the model, and modified it to produce an array of zeros instead. Preliminary results with this suggest that the VQA model is considering the visual features--it performs worse on evaluation when blindfolded. This is interesting, because another student performed a similar test in a course project, where they gave the VQA wrong images, and they did not see decrease in performance. I plan to implement that method of blindfolding as well, and compare the results between the two methods. \\
-Next, I plan to 'enable' the semantic sensor in habitat-sim, which reads object labels from annotations in the dataset, and pass these semantic observations to the VQA model along with the RGB observations. I plan to do the same thing with the Navigation model. \\
-Assuming that the model is considering visual input, one of the experiments I want to conduct is to give the model more variety in the viewpoints it is considering, since the shortest path navigation being learned may not give the best views for answering the question\cite{blindfolded}. I plan to do this by implementing a look-around procedure for the agent to do at the end of each shortest path navigation. Custom actions can be defined in habitat, so I plan to implement special turning actions with larger movement than the standard actions, and then have the agent perform these at the end of each navigation during training. The limited views of the shortest path can be seen in Fig.~\ref{fig:viewpoints}, which shows the last five steps the agent took. 
+I am working with AI Habitat, a simulation platform for working with embodied AI\cite{habitat19iccv}. It consists of two parts, Habitat-Sim, the 3D simulator, and Habitat-Lab, the library for embodied AI development. I am using the Matterport3D dataset, a dataset of real interiors with human annotation of objects, as my scene dataset\cite{matterport}.
 
+I am starting with the Embodied Question Answering baseline in Habitat-Lab, which consists of three parts, a CNN for initial feature extraction, a question answering module, and a navigation module, called Pacman\cite{embodiedqa}. I am using the EQA task dataset, which was created using code to automatically generate questions and answers to correspond with scenes in the Matterport3D dataset\cite{eqa_matterport}. 
+
+I am working in a GPU cluster through mlt, but also am going to create a mini-version of the dataset that I can use to run tests locally, although fully training or evaluating will need to happen on a GPU, due to the size of the dataset. I will be considering two metrics for the VQA task: mean rank and accuracy. 
+
+The first task is to determine if the VQA model is considering the visual input when answering the questions. To do this, I will run evaluation normally, where the VQA model gets the images, and "blindfolded", where the VQA does not. To do this, I have duplicated a method that converts the images to an array to input to the model, and modified it to produce an array of zeros instead. Preliminary results with this suggest that the VQA model is considering the visual features--it performs worse on evaluation when blindfolded. This is interesting, because another student performed a similar test in a course project, where they gave the VQA wrong images, and they did not see decrease in performance. 
+
+Next, I plan to 'enable' the semantic sensor in habitat-sim, which reads object labels from annotations in the dataset, and pass these semantic observations to the VQA model along with the RGB observations. 
+
+Assuming that the model is considering visual input, one of the experiments I want to conduct is to give the model more variety in the viewpoints it is considering, since the shortest path navigation being learned may not give the best views for answering the question\cite{blindfolded}. I plan to do this by implementing a look-around procedure for the agent to do at the end of each shortest path navigation. Custom actions can be defined in habitat, so I plan to implement special turning actions with larger movement than the standard actions, and then have the agent perform these at the end of each navigation during training. The limited views of the shortest path can be seen in Fig.~\ref{fig:viewpoints}, which shows the last five steps the agent took. 
 
 \begin{figure}[h]
 	\centering
@@ -121,11 +128,10 @@ Assuming that the model is considering visual input, one of the experiments I wa
 	\caption{Limited Viewpoints}
 	\label{fig:viewpoints}
 \end{figure}
+Next, I plan to run a comparison to a state of the art model for VQA, Visual-Linguistic BERT\cite{VLBERT}. VL-BERT is a Transformer based model, with pre-training for representation of both visual and linguistic features. This pre-training means that even before training on the specific VQA task, the model has a significant amount of world knowledge, both visual and linguistic. This will be an examination of how both pre-training and a different architecture improve performance on the VQA task. It should also be possible to explicitly pass the semantic information being given to the previous model to VL-BERT as well, in order to examine if improvements due to information injection are at least partially independent of the model type. 
 
 
 \section{Schedule}
-
-
 
 \begin{ganttchart}[
 	hgrid=true,
@@ -146,7 +152,7 @@ Assuming that the model is considering visual input, one of the experiments I wa
 	\ganttbar{Enable Semantic Sensor During VQA}{7}{9} \\
 	\ganttbar{Implement Look Around}{8}{10} \\
 	\ganttbar[bar/.append style={fill=cyan}]{Halftime Report}{9}{9} \\
-	\ganttbar{Enable Semantic Sensor During Nav}{10}{11} \\
+	\ganttbar{VisualBERT Comparison}{10}{11} \\
 	\ganttbar[bar/.append style={fill=red}]{GPU Off}{8}{8} \\
 	\ganttbar{Writing}{12}{13} \\
 	\ganttbar[bar/.append style={fill=cyan}]{Writing Seminar II}{14}{15} \\
@@ -158,7 +164,6 @@ Assuming that the model is considering visual input, one of the experiments I wa
 	\ganttlink{elem0}{elem4}
 	\ganttlink{elem4}{elem6}
 	\ganttlink{elem4}{elem7}
-	\ganttlink{elem4}{elem9}
 	\ganttlink{elem11}{elem13}
 	\ganttlink{elem13}{elem14}
 	\ganttlink{elem14}{elem15}
@@ -168,7 +173,8 @@ Blue bars are scheduled events \& deadlines, grey are tasks, and red are known i
 
 
 \section{Risk Analysis and Ethical Considerations}
-The main risks to completion of this project are related to running out of time--habitat is a new environment for me to work in, so unexpected difficulties are likely to pop up, and the data is too large to work locally, but there are always risks to working on shared servers--at the moment some of the GPUs in the cluster I am using are behaving strangely, and although the issue is under investigation, it is slowing down some of the work. \\
+The main risks to completion of this project are related to running out of time--habitat is a new environment for me to work in, so unexpected difficulties are likely to pop up, and the data is too large to work locally, but there are always risks to working on shared servers--at the moment some of the GPUs in the cluster I am using are behaving strangely, and although the issue is under investigation, it is slowing down some of the work. 
+
 An important note ethically is that the original development of this model, not the version included in Habitat-Lab, but the original version associated with the EmbodiedQA project, was developed using a dataset that, as of July 2020, was the subject of a lawsuit by the company Planner5D against Facebook and Princeton, on the grounds that the data was accessed without permission\cite{planner5d}. This is not the dataset that I will be using, but it was used in the development of the baseline and the development of the Embodied Question Answering task definition. 
 
 

@@ -13,3 +13,4 @@
 |Blindfold Baselines for Embodied QA|Ankesh Anand, Eugene Belilovsky, Kyle Kastner, Hugo Larochelle, Aaron Courville|Are Embodied QA tasks actually using the visual input?||Embodied QA||<https://github.com/ankeshanand/blindfold-baselines-eqa>|
 |Situated Dialogue and Spatial Organization: What, Where... and Why?|Geert-Jan M. Kruijff, Hendrik Zender, Patric Jensfelt, and Henrik I. Christensen|Navigation, Human-Robot Interaction||Human Augmented Mapping, Situated Dialogue, Question Answering|||
 |Robots That Use Language|Stefanie Tellex, Nakul Gopalan, Hadas Kress-Gazit, Cynthia Matuszek|Summary Paper|||Contains table of language grounding/robotics datasets with links||
+|VL-BERT: Pre-training of Generic Visual-Linguistic Representations| Weijie Su, Xizhou Zhu, Yue Cao, Bin Li, Lewei Lu, Furu Wei, Jifeng Dai|Pre-training, Model|variety of Visual-Linguistic||https://github.com/jackroos/VL-BERT|
