@@ -1,0 +1,11 @@
+habitat-lab/
+papers/
+*.aux
+*.lof
+*.log
+*.lot
+*.out
+*.toc
+*.bbl
+*.blg
+*.pdf
