@@ -4,7 +4,7 @@
 Fig.~\ref{fig:training_metrics} shows metrics for each batch during training. Fig.~\ref{fig:baseline_metrics} shows metrics averaged for each epoch during the baseline evaluation. Fig.~\ref{fig:blindfolded_metrics} shows metrics averaged for each epoch during blindfolded evaluation. It's clear in this graphs that the evaluation results are more stable when the model is given images. As can be seen in Figures~\ref{fig:baseline_loss} \& ~\ref{fig:blindfolded_loss}, the model begins to overfit to the training data around epoch 10. 
 Table~\ref{tab:best_baseline} shows the checkpoints with lowest loss, highest accuracy, and lowest mean rank during the evaluation of the baseline, with the metric that was "best" during that checkpoint in bold. Table~\ref{tab:best_blindfolded} shows the same for blindfolded evaluation. Comparing their best, the blindfolded model has 4.7\% worse loss than the baseline, 0.212 higher loss, and 0.149 higher mean rank. 
 
-\begin{figure}
+\begin{figure}[h!]
      \centering
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
@@ -30,7 +30,7 @@ Table~\ref{tab:best_baseline} shows the checkpoints with lowest loss, highest ac
      \label{fig:training_metrics}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[h!]
      \centering
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
@@ -57,7 +57,7 @@ Table~\ref{tab:best_baseline} shows the checkpoints with lowest loss, highest ac
 \end{figure}
 
 
-\begin{figure}
+\begin{figure}[h!]
      \centering
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
@@ -83,7 +83,7 @@ Table~\ref{tab:best_baseline} shows the checkpoints with lowest loss, highest ac
      \label{fig:blindfolded_metrics}
 \end{figure}
 
-\begin{table}[h]
+\begin{table}[h!]
 \centering
 \caption{"Best" Epochs During Baseline Evaluation}
 \begin{tabular}{l | l | l | l}
@@ -96,7 +96,7 @@ Checkpoint & Loss & Accuracy & Mean Rank \\
 \label{tab:best_baseline}
 \end{table}
 
-\begin{table}[h]
+\begin{table}[h!]
 \centering
 \caption{"Best" Epochs During Blindfolded Evaluation}
 \begin{tabular}{l | l | l | l}
@@ -107,6 +107,50 @@ Checkpoint & Loss & Accuracy & Mean Rank \\
 39 & 4.788071 & 0.307653 & \textbf{4.260204}
 \end{tabular}
 \label{tab:best_blindfolded}
+\end{table}
+
+
+\section{Experiment 2: Basic Semantic Categories}
+In this experiment, the model was provided with semantic category information, as described in \todo{figure out how to reference a section}
+With the categories, the highest accuracy was 1.4\% higher than the baseline's highest accuracy, and the highest mean rank was 0.46 higher than the baseline's highest.
+
+\begin{figure}[h!]
+     \centering
+     \begin{subfigure}[b]{0.3\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{/home/yasmeen/Desktop/thesisproj/thesis/figure/results/semantic_categories/eval/avg val accuracy.png}
+         \caption{Validation Accuracy}
+         \label{fig:category_accuracy}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.3\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{/home/yasmeen/Desktop/thesisproj/thesis/figure/results/semantic_categories/eval/avg val loss.png}
+         \caption{Validation Loss}
+         \label{fig:category_loss}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.3\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{/home/yasmeen/Desktop/thesisproj/thesis/figure/results/semantic_categories/eval/avg val mean rank.png}
+         \caption{Validation Mean Rank}
+         \label{fig:category_mean_rank}
+     \end{subfigure}
+     \caption{Validation Metrics for model given semantic categories}
+     \label{fig:category_metrics}
+\end{figure}
+
+\begin{table}[h!]
+\centering
+\caption{"Best" Epochs During Evaluation of Model with Semantic Categories}
+\begin{tabular}{l | l | l | l}
+Checkpoint & Loss & Accuracy & Mean Rank \\
+\hline
+6 & \textbf{2.108628} & 0.372959 & 3.971939 \\
+22 & 2.444937 & \textbf{0.417347} & 3.761735 \\
+29 & 2.824962 & 0.402551 & \textbf{3.650510} 
+\end{tabular}
+\label{tab:best_category}
 \end{table}
 
 
