@@ -8,8 +8,9 @@ I am starting with the Embodied Question Answering baseline in Habitat-Lab, whic
 \section{The Datasets}
 \subsection{Interiors}
 
-\subsection{Questions} \todo{find the actual name of this dataset.}
-This dataset contains questions of three types: 'color\_room', 'color', and 'location'. \todo{add descriptions of the question types}
+\subsection{MP3D-EQA Dataset} 
+This dataset contains questions of three types: 'color\_room': \emph{What color is the <obj> in the <room>?}, 'color': \emph{What color is the <obj>?}, and 'location': \emph{What room is the <obj> located in?}. \todo{add details about dataset creation}
+
 \todo{discuss issues with the dataset--paper it was introduced in focused on the navigation aspect of the task, more suited to nav}
 \begin{table}[h]
 \centering
@@ -28,10 +29,21 @@ location & 14.22234 & 13.84615\\
 
 
 \section{Experiment 1: Baseline and Blindfolding}
-In this task, I trained and evaluated my baseline model, the CNN and VQA portions of the EQA baseline in habitat-lab. I also conducted a blindfolding test, in which during evaluation the model was given zeroes instead of the visual information for the scene. This was done by duplicating and modifying the method that converts the .jpgs into numpy arrays to be input to the model, so that it produced an array of zeroes of the same size instead. The point of this blindfolding was to determine if the VQA model was considering the visual input when answering the questions.
+\label{sec:exp_1}
+In this task, I trained and evaluated my baseline model, the CNN and VQA portions of the EQA baseline in habitat-lab. A diagram of the VQA model can be seen in Fig.~\ref{fig:baseline_model}. I also conducted a blindfolding test, in which during evaluation the model was given zeroes instead of the visual information for the scene. This was done by duplicating and modifying the method that converts the .jpgs into numpy arrays to be input to the model, so that it produced an array of zeroes of the same size instead. The point of this blindfolding was to determine if the VQA model was considering the visual input when answering the questions.
+
+\begin{figure}[h]
+     \centering
+     \includegraphics[width=.5\textwidth]{/home/yasmeen/Desktop/thesisproj/thesis/figure/baseline_diagram.png}
+     \caption{VQA Model}
+     \label{fig:baseline_model}
+\end{figure}
 
 \section{Experiment 2: Basic Semantic Categories}
-\todo{explain this section, put list of categories in appendix}
+\label{sec:exp_2}
+The agent in habitat-sim includes a 'semantic sensor', that reads annotations from the dataset. It reads annotations of object instances, which can then be mapped to category ids. The list of category IDs can be found in appendix~\ref{app:categories}. These category IDs were used as another information source for the model, as shown in Fig.~\ref{fig:category_model}.
+
+\todo{Give more detail on shaping, add motivation}
 \begin{figure}[h]
      \centering
      \includegraphics[width=.5\textwidth]{/home/yasmeen/Desktop/thesisproj/thesis/figure/model_w_semantic.png}
