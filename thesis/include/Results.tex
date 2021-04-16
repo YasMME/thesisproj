@@ -1,8 +1,23 @@
 % CREATED BY DAVID FRISK, 2016
 \chapter{Results}
 \section{Experiment 1: Baseline Evaluation \& Blindfolding}
-Fig.~\ref{fig:training_metrics} shows metrics for each batch during training. Fig.~\ref{fig:baseline_metrics} shows metrics averaged for each epoch during the baseline evaluation. Fig.~\ref{fig:blindfolded_metrics} shows metrics averaged for each epoch during blindfolded evaluation. It's clear in these graphs that the evaluation results are more stable when the model is given images. As can be seen in Figures~\ref{fig:baseline_loss} \& ~\ref{fig:blindfolded_loss}, the model begins to overfit to the training data around epoch 10. 
-Table~\ref{tab:best_baseline} shows the checkpoints with lowest loss, highest accuracy, and lowest mean rank during the evaluation of the baseline, with the metric that was "best" during that checkpoint in bold. Table~\ref{tab:best_blindfolded} shows the same for blindfolded evaluation. Comparing their best, the blindfolded model has 4.7\% worse loss than the baseline, 0.212 higher loss, and 0.149 higher mean rank. 
+Fig.~\ref{fig:training_metrics} shows metrics for each batch during training. Fig.~\ref{fig:baseline_metrics} shows metrics averaged for each epoch during the baseline evaluation. Fig.~\ref{fig:blindfolded_metrics} shows metrics averaged for each epoch during blindfolded evaluation. It's clear in these graphs that the evaluation results are more stable when the model is given images. As can be seen in Figures~\ref{fig:baseline_loss} \& ~\ref{fig:blindfolded_loss}, the model begins to overfit to the training data around epoch 10. \newline
+Table~\ref{tab:best_baseline} shows the checkpoints with lowest loss, highest accuracy, and lowest mean rank during the evaluation of the baseline, with the metric that was "best" during that checkpoint in bold. Table~\ref{tab:best_blindfolded} shows the same for blindfolded evaluation. Comparing their best, the blindfolded model has 4.7\% worse loss than the baseline, 0.212 higher loss, and 0.149 higher mean rank. \newline
+One question here is whether the blank inputs to the model are actively confusing it--in training it is always given an image, so this black input is a completely new case. This could also explain the differences to a previous student's course project, in which they found equivalent performance to baseline when the agent was given a random image from the dataset. One challenge here is that scenes are used for multiple questions, so this leaves open the possibility that the item being asked about is actually present in the room. Even using scenes not included in the dataset would be difficult to control, since if you ask the agent 'what color is the bookshelf?', you would then need to confirm that no bookshelves are present in the random image. \newline
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=\textwidth]{/home/yasmeen/Desktop/thesisproj/thesis/figure/results/baseline_and_blindfolding/images/ckpt_23_781_image.jpg}
+	\caption{Example VQA Result}
+	\label{fig:example_vqa_result}
+\end{figure}
+	
+
+\begin{figure}[ht!]
+	\centering
+	\includegraphics[width=\textwidth]{/home/yasmeen/Desktop/thesisproj/thesis/figure/results/baseline_and_blindfolding/blindfolded/ckpt_23_1250_image.jpg}
+	\caption{Example Blindfolded Result}
+	\label{fig:example_blindfolded_result}
+\end{figure}
 
 \begin{figure}[ht!]
      \centering
@@ -112,7 +127,7 @@ Checkpoint & Loss & Accuracy & Mean Rank \\
 
 \section{Experiment 2: Basic Semantic Categories}
 In this experiment, the model was provided with semantic category information, as described in \ref{sec:exp_2}.
-With the categories, the highest accuracy was 1.4\% higher than the baseline's highest accuracy, and the highest mean rank was 0.46 higher than the baseline's highest.
+With the categories, the highest accuracy was 1.4\% higher than the baseline's highest accuracy, and the highest mean rank was 0.46 higher than the baseline's highest. \newline
 
 \begin{figure}[ht!]
      \centering

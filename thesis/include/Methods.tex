@@ -1,17 +1,25 @@
 % CREATED BY DAVID FRISK, 2016
 \chapter{Methods}
 \todo{REWRITE TO PAST TENSE}
-I am working with AI Habitat, a simulation platform for working with embodied AI\cite{habitat19iccv}. It consists of two parts, Habitat-Sim, the 3D simulator, and Habitat-Lab, the library for embodied AI development. I am using the Matterport3D dataset, a dataset of real interiors with human annotation of objects, as my scene dataset\cite{matterport}.
+I am working with AI Habitat, a simulation platform for working with embodied AI\cite{habitat19iccv}. It consists of two parts, Habitat-Sim, the 3D simulator, and Habitat-Lab, the library for embodied AI development. 
 
-I am starting with the Embodied Question Answering baseline in Habitat-Lab, which consists of three parts, a CNN for initial feature extraction, a question answering module, and a navigation module, called Pacman\cite{embodiedqa}. I am using the EQA task dataset, which was created using code to automatically generate questions and answers to correspond with scenes in the Matterport3D dataset\cite{eqa_matterport}. 
+\subsection{The Model}
+I am starting with the Embodied Question Answering baseline in Habitat-Lab, which consists of three parts, a CNN for initial feature extraction, a question answering module, and a navigation module, called PACMAN\cite{embodiedqa}.
+The CNN feature extractor is trained on three tasks: RGB reconstruction, semantic segmentation, and depth estimation.
+The question answering module is given the last five frames of navigation (in training taken during ground-truth shortest path navigation), and then predicts an answer from a set of possible answers. 
+The navigation is trained via imitation learning to imitate shortest path navigation. \todo{Maybe include an example of the json for an episode?} 
+The training of the Habitat-Lab version of the model differs somewhat to the version presented in the Embodied Question Answering paper. For the original model, the CNN, question answering, and navigation modules were all trained separately, and then reinforcement learning was used to fine-tune, and more strongly link the question answering and navigation modules, by using accurate question answering as part of the reward for the navigation module. This reinforcement learning is missing from the habitat version of the model; the components of the model are only trained separately. 
 
 \section{The Datasets}
+\todo{REWRITE TO PAST TENSE}
+I am using the Matterport3D dataset, a dataset of real interiors with human annotation of objects, as my scene dataset\cite{matterport}. 
+I am using the MP3D-EQA task dataset, which was created using code to automatically generate questions and answers to correspond with annotated scenes in the Matterport3D dataset\cite{eqa_matterport}. 
 \subsection{Interiors}
 
 \subsection{MP3D-EQA Dataset} 
-This dataset contains questions of three types: 'color\_room': \emph{What color is the <obj> in the <room>?}, 'color': \emph{What color is the <obj>?}, and 'location': \emph{What room is the <obj> located in?}. \todo{add details about dataset creation}
+This dataset contains questions of three types: 'color\_room': \emph{What color is the <obj> in the <room>?}, 'color': \emph{What color is the <obj>?}, and 'location': \emph{What room is the <obj> located in?}. \todo{add details about dataset creation} This dataset was based off of the EQA-V1 dataset\cite{embodiedqa}. There were some differences between the datasets, however. The EQA-V1 dataset included a fourth type of question, prepositional questions: \emph{What is <on/above/below/next to? the <obj> in the <room>?}, but these are not present in MP3D-EQA, due to limited occurence of these relationships in the Matterport3D dataset. EQA-V1 was built based on the SUNCG dataset, which is no longer available. 
+The paper which introduces the MP3D-EQA dataset was mainly focused on the navigation aspect of the task, and the question types reflect that. A color or location question should theoretically be a good indication of whether or not the agent has successfully navigated to the object, but actually answering the question may not require as complex of reasoning. \todo{discussion of difficulty of color recognition}
 
-\todo{discuss issues with the dataset--paper it was introduced in focused on the navigation aspect of the task, more suited to nav}
 \begin{table}[h]
 \centering
 \caption{Question Type Breakdown}
@@ -27,10 +35,11 @@ location & 14.22234 & 13.84615\\
 \label{tab:q_breakdown}
 \end{table}
 
+The dataset has a fixed train/eval split. There is one object which only occurs in the validation set ('toaster'), and one answer that only occurs in the validation set ('gym'). 
 
 \section{Experiment 1: Baseline and Blindfolding}
 \label{sec:exp_1}
-In this task, I trained and evaluated my baseline model, the CNN and VQA portions of the EQA baseline in habitat-lab. A diagram of the VQA model can be seen in Fig.~\ref{fig:baseline_model}. I also conducted a blindfolding test, in which during evaluation the model was given zeroes instead of the visual information for the scene. This was done by duplicating and modifying the method that converts the .jpgs into numpy arrays to be input to the model, so that it produced an array of zeroes of the same size instead. The point of this blindfolding was to determine if the VQA model was considering the visual input when answering the questions.
+In this task, I trained and evaluated my baseline model, the CNN and VQA portions of the EQA baseline in habitat-lab. A diagram of the VQA model can be seen in Fig.~\ref{fig:baseline_model}. I also conducted a blindfolding test, in which during evaluation the model was given zeroes instead of the visual information for the scene. This was done by duplicating and modifying the method that converts the .jpgs into numpy arrays to be input to the model, so that it produced an array of zeroes of the same size instead. The point of this blindfolding was to determine if the VQA model was considering the visual input when answering the questions. 
 
 \begin{figure}[h]
      \centering
@@ -50,3 +59,8 @@ The agent in habitat-sim includes a 'semantic sensor', that reads annotations fr
      \caption{Model With Semantic Category IDs as 3rd input}
      \label{fig:category_model}
 \end{figure}
+
+\section{Experiment 3: DenseCap}
+\subsection{Using DenseCap Features}
+
+\subsection{Using DenseCap Boxes}
