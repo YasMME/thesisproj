@@ -1,0 +1,47 @@
+% CREATED BY DAVID FRISK, 2016
+% MODIFIED BY JAKOB JARMAR, 2016
+% A few changes by Birgit Grohe, 2017 and 2018
+% Adjustments with the help of Gustav Örtenberg 2019
+
+% IMPORT SETTINGS
+\documentclass[12pt,a4paper,twoside,openright]{report}
+\input{include/settings/Settings}
+
+\title{Halfway Report}
+\author{Yasmeen Emampoor}
+\date{April 2021}
+
+
+\begin{document} 
+\maketitle
+% START OF MAIN DOCUMENT
+\setcounter{page}{1}
+\pagenumbering{arabic}			% Arabic numbering starting from 1 (one)
+\setlength{\parskip}{0pt plus 1pt}
+
+% INTRODUCTION
+\input{include/Introduction}
+% THEORY
+\input{include/Theory}
+% METHODS
+\input{include/Methods}
+% RESULTS
+\input{include/Results}
+% Next Up
+\input{include/NextUp}
+
+% REFERENCES / BIBLIOGRAPHY
+\cleardoublepage
+\addcontentsline{toc}{chapter}{Bibliography}
+\input{include/backmatter/References}
+
+% APPENDICES
+\cleardoublepage
+\appendix
+\setcounter{page}{1}
+\pagenumbering{Roman}			% Capitalized roman numbering starting from I (one)
+
+\input{include/backmatter/Appendix_1}
+
+
+\end{document}

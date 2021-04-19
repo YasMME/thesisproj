@@ -17,7 +17,7 @@ I am using the MP3D-EQA task dataset, which was created using code to automatica
 \subsection{Interiors}
 
 \subsection{MP3D-EQA Dataset} 
-This dataset contains questions of three types: 'color\_room': \emph{What color is the <obj> in the <room>?}, 'color': \emph{What color is the <obj>?}, and 'location': \emph{What room is the <obj> located in?}. \todo{add details about dataset creation} This dataset was based off of the EQA-V1 dataset\cite{embodiedqa}. There were some differences between the datasets, however. The EQA-V1 dataset included a fourth type of question, prepositional questions: \emph{What is <on/above/below/next to? the <obj> in the <room>?}, but these are not present in MP3D-EQA, due to limited occurence of these relationships in the Matterport3D dataset. EQA-V1 was built based on the SUNCG dataset, which is no longer available. 
+This dataset contains questions of three types: 'color\_room': \emph{What color is the <obj> in the <room>?}, 'color': \emph{What color is the <obj>?}, and 'location': \emph{What room is the <obj> located in?}. This dataset was based off of the EQA-V1 dataset\cite{embodiedqa}. There were some differences between the datasets, however. The EQA-V1 dataset included a fourth type of question, prepositional questions: \emph{What is <on/above/below/next to? the <obj> in the <room>?}, but these are not present in MP3D-EQA, due to limited occurence of these relationships in the Matterport3D dataset. EQA-V1 was built based on the SUNCG dataset, which is no longer available. 
 The paper which introduces the MP3D-EQA dataset was mainly focused on the navigation aspect of the task, and the question types reflect that. A color or location question should theoretically be a good indication of whether or not the agent has successfully navigated to the object, but actually answering the question may not require as complex of reasoning. \todo{discussion of difficulty of color recognition}
 
 \begin{table}[h]
@@ -60,7 +60,3 @@ The agent in habitat-sim includes a 'semantic sensor', that reads annotations fr
      \label{fig:category_model}
 \end{figure}
 
-\section{Experiment 3: DenseCap}
-\subsection{Using DenseCap Features}
-
-\subsection{Using DenseCap Boxes}
