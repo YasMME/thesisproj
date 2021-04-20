@@ -4,7 +4,7 @@
 % Adjustments with the help of Gustav Örtenberg 2019
 
 % IMPORT SETTINGS
-\documentclass[12pt,a4paper,twoside,openright]{report}
+\documentclass[12pt,a4paper,twoside,openany]{report} %changed openright to openany
 \input{include/settings/Settings}
 
 \title{Halfway Report}
@@ -31,16 +31,15 @@
 \input{include/NextUp}
 
 % REFERENCES / BIBLIOGRAPHY
-\cleardoublepage
+\newpage
 \addcontentsline{toc}{chapter}{Bibliography}
 \input{include/backmatter/References}
 
 % APPENDICES
-\cleardoublepage
+\newpage
 \appendix
 \setcounter{page}{1}
 \pagenumbering{Roman}			% Capitalized roman numbering starting from I (one)
-
 \input{include/backmatter/Appendix_1}
 
 

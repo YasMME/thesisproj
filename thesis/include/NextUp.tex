@@ -31,3 +31,9 @@ Since DenseCap identifies areas of interest, these boxes can be used to give the
      \caption{Model With Densecap Boxes}
      \label{fig:densecap_boxes}
 \end{figure}
+
+\section{Experiment 4: Look Around}
+The previous experiments focus on giving more sources of information to the model. The planned 'Look Around' experiment would attempt to improve the information being given instead. The VQA model takes in the last five frames of navigation as its visual input. However, as seen in Fig.~\ref{fig:example_vqa_result}, these images are very similar to each other, and with odd angles of the object in consideration. The plan for this experiment is to implement a look around procedure, where the agent makes a series of moves (look left, look right, etc) at the end of navigation, so that the last five frames will give more varied viewpoints of the room and object, and these frames will be used as the visual input to VQA. 
+
+\section{Experiment 5: Visual-Linguistic BERT}
+The last experiment I hope to conduct is to compare the previous model with a state of the art model using a transformer. VL-BERT is pretrained for visual linguistic tasks, using a combination of captioning and text-only tasks\cite{VLBERT}. VL-BERT performed well on the standard VQA task, so it makes a good comparison for a model designed specifically for this task. 

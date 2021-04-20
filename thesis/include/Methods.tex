@@ -39,7 +39,7 @@ The dataset has a fixed train/eval split. There is one object which only occurs 
 
 \section{Experiment 1: Baseline and Blindfolding}
 \label{sec:exp_1}
-In this task, I trained and evaluated my baseline model, the CNN and VQA portions of the EQA baseline in habitat-lab. A diagram of the VQA model can be seen in Fig.~\ref{fig:baseline_model}. I also conducted a blindfolding test, in which during evaluation the model was given zeroes instead of the visual information for the scene. This was done by duplicating and modifying the method that converts the .jpgs into numpy arrays to be input to the model, so that it produced an array of zeroes of the same size instead. The point of this blindfolding was to determine if the VQA model was considering the visual input when answering the questions. 
+In this task, I trained and evaluated my baseline model, the CNN and VQA portions of the EQA baseline in habitat-lab. A diagram of the VQA model can be seen in Fig.~\ref{fig:baseline_model}. I also conducted a blindfolding test, in which during evaluation the model was given zeroes instead of the visual information for the scene. This was done by duplicating and modifying the method that converts the .jpgs into numpy arrays to be input to the model, so that it produced an array of zeroes of the same size instead, sending a black/blank image as the input to the model. The point of this blindfolding was to determine if the VQA model was considering the visual input when answering the questions. 
 
 \begin{figure}[h]
      \centering
@@ -55,7 +55,7 @@ The agent in habitat-sim includes a 'semantic sensor', that reads annotations fr
 \todo{Give more detail on shaping, add motivation}
 \begin{figure}[h]
      \centering
-     \includegraphics[width=.5\textwidth]{/home/yasmeen/Desktop/thesisproj/thesis/figure/model_w_semantic.png}
+     \includegraphics[width=.75\textwidth]{/home/yasmeen/Desktop/thesisproj/thesis/figure/model_w_semantic.png}
      \caption{Model With Semantic Category IDs as 3rd input}
      \label{fig:category_model}
 \end{figure}
