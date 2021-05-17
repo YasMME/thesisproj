@@ -40,21 +40,21 @@ Fig.~\ref{fig:baseline_metrics} shows metrics averaged for each epoch during the
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
          \includegraphics[width=\textwidth]{./figure/results/baseline_and_blindfolding/training/accuracy.png}
-         \caption{Training Accuracy}
+         \caption{Accuracy}
          \label{fig:training_accuracy}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
          \includegraphics[width=\textwidth]{./figure/results/baseline_and_blindfolding/training/loss.png}
-         \caption{Training Loss}
+         \caption{Loss}
          \label{fig:training_loss}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
          \includegraphics[width=\textwidth]{./figure/results/baseline_and_blindfolding/training/mean_rank.png}
-         \caption{Training Mean Rank}
+         \caption{Mean Rank}
          \label{fig:training_mean_rank}
      \end{subfigure}
      \caption{Training Metrics}
@@ -66,21 +66,21 @@ Fig.~\ref{fig:baseline_metrics} shows metrics averaged for each epoch during the
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
          \includegraphics[width=\textwidth]{./figure/results/baseline_and_blindfolding/images/avg val accuracy.png}
-         \caption{Baseline Evaluation Accuracy} % SD 2021-05-01 16:14:52 +0200: What is smoothed 0.6?
+         \caption{Accuracy} % SD 2021-05-01 16:14:52 +0200: What is smoothed 0.6?
          \label{fig:baseline_accuracy}
      \end{subfigure}
      \hfill
           \begin{subfigure}[b]{0.3\textwidth}
          \centering
          \includegraphics[width=\textwidth]{./figure/results/baseline_and_blindfolding/images/avg val loss.png}
-         \caption{Baseline Evaluation Loss}
+         \caption{Loss}
          \label{fig:baseline_loss}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
          \includegraphics[width=\textwidth]{./figure/results/baseline_and_blindfolding/images/avg val mean rank.png}
-         \caption{Baseline Evaluation Mean Rank}
+         \caption{Mean Rank}
          \label{fig:baseline_mean_rank}
      \end{subfigure}
      \caption{Baseline Evaluation Metrics}
@@ -93,21 +93,21 @@ Fig.~\ref{fig:baseline_metrics} shows metrics averaged for each epoch during the
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
          \includegraphics[width=\textwidth]{./figure/results/baseline_and_blindfolding/blindfolded/avg val accuracy.png}
-         \caption{Blindfolded Evaluation Accuracy}
+         \caption{Accuracy}
          \label{fig:blindfolded_accuracy}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
          \includegraphics[width=\textwidth]{./figure/results/baseline_and_blindfolding/blindfolded/avg val loss.png}
-         \caption{Blindfolded Validation Loss}
+         \caption{Loss}
          \label{fig:blindfolded_loss}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
          \includegraphics[width=\textwidth]{./figure/results/baseline_and_blindfolding/blindfolded/avg val mean rank.png}
-         \caption{Blindfolded Evaluation Mean Rank}
+         \caption{Mean Rank}
          \label{fig:blindfolded_mean_rank}
      \end{subfigure}
      \caption{Blindfolded Evaluation Metrics}
@@ -172,14 +172,14 @@ With the categories, the highest accuracy on the evaluation set was 1.4\% higher
      \begin{subfigure}[b]{0.4\textwidth}
          \centering
          \includegraphics[width=\textwidth]{./figure/results/semantic_categories/eval/avg val accuracy.png}
-         \caption{Evaluation Accuracy}
+         \caption{Accuracy}
          \label{fig:category_accuracy}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.4\textwidth}
          \centering
          \includegraphics[width=\textwidth]{./figure/results/semantic_categories/eval/avg val mean rank.png}
-         \caption{Evaluation Mean Rank}
+         \caption{Mean Rank}
          \label{fig:category_mean_rank}
      \end{subfigure}
      \caption{Evaluation Metrics for model given semantic categories}
@@ -201,12 +201,10 @@ Checkpoint & Loss & Accuracy & Mean Rank \\
 
 \section{Experiment 3: Look Around}
 \subsection{Method}
-This experiment attempts to increase the usefulness of the visual information being provided to the model. The VQA model takes in the last five frames of navigation as its visual input. However, as seen in Fig.~\ref{fig:example_vqa_result}, these images are very similar to each other, and often have odd angles of the object in consideration. This experiment implements a look around procedure, where the agent akes a series of moves (look left, look right, etc) at the end of navigation, so that the last five frames give more varied viewpoints of the room and object. The hypothesis here was that the model should, given the larger visual context, perform better on location questions. 
+This experiment attempts to increase the usefulness of the visual information being provided to the model. The VQA model takes in the last five frames of navigation as its visual input. However, as seen in Fig.~\ref{fig:example_vqa_result}, these images are very similar to each other, and often have odd angles of the object in consideration. This experiment implements a look around procedure, where the agent takes a series of moves (look left, look right, etc) at the end of navigation, so that the last five frames give more varied viewpoints of the room and object. The hypothesis here was that the model should, given the larger visual context, perform better on location questions. \newline
+\todo{generation of the images, the agent, quaternions, calculation of new rotations}
 
 \subsection{Results}
-
-\todo{calculate and discuss improvement by question type.}
-
 \begin{figure}[H]
      \centering
      \begin{subfigure}[b]{0.3\textwidth}
@@ -275,7 +273,7 @@ Checkpoint & Loss & Accuracy & Mean Rank \\
 
 \section{Experiment 4: Blind}
 \subsection{Method}
-For this experiment, the same function used to blindfold the model in Experiment 1 was also applied during training. This was done in order to have a 'text-only' baseline without changing the architecture of the model, and to attempt to address the question of how much the model was being confused by the 'new' case of a black image after training with normal images. 
+For this experiment, the same function used to blindfold the model in Experiment 1 was also applied during training. This was done in order to have a 'text-only' baseline without changing the architecture of the model, and to attempt to address the question of how much the model was being confused by the 'new' case of a black image after training with normal images during Experiment 1. 
 
 \subsection{Results}
 The model trained without images, at its best checkpoints, performed comparably to the model trained with images and then blindfolded later, however, there is a clearer trajectory of the behaviour from checkpoint to checkpoint, as seen comparing Fig.~\ref{fig:fb_e_metrics} and Fig.~\ref{fig:blindfolded_metrics}. \todo{Loss??}
@@ -313,7 +311,7 @@ The model trained without images, at its best checkpoints, performed comparably 
 Checkpoint & Loss & Accuracy & Mean Rank \\
 \hline
 7 & 73306.476562 & \textbf{0.363265} & 4.273469 \\
-6 & 74890.796875 & 0.325000 & \textbf{0.325000}
+6 & 74890.796875 & 0.325000 & \textbf{4.171429}
 \end{tabular}
 \label{tab:best_blind}
 \end{table}

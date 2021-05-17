@@ -50,7 +50,7 @@ The dataset has a fixed train/eval split. There is one object which only occurs 
 \subsubsection{Limitations}
 The paper which introduces the MP3D-EQA dataset was mainly focused on the navigation aspect of the task, and the question types reflect that. A color or location question should theoretically be a good indication of whether or not the agent has successfully navigated to the object, but actually answering the question may not require as complex of reasoning. \todo{discussion of difficulty of color recognition: discuss relativity of human color identification, discuss method of color annotation used in the dataset creation}
 
-The dataset of questions and answers for EQA in Habitat was automatically generated, and may contain some errors. One example of this is shown in Fig.~\ref{fig:err_ex}, in which a VQA model answered that the sofa in the living room is tan, but the ground truth answer is that it is yellow. However, looking at the image, I see a tan sofa and a yellow armchair. It seems that at some point, the armchair was annotated as a sofa, but the model is identifying the tan sofa as the sofa being asked about. 
+The dataset of questions and answers for EQA in Habitat was automatically generated, and may contain some errors. One example of this is shown in Fig.~\ref{fig:err_ex}, in which the VQA model answered that the sofa in the living room is tan, but the ground truth answer is that it is yellow. However, looking at the image, I see a tan sofa and a yellow armchair. It seems that at some point, the armchair was annotated as a sofa, but the model is identifying the tan sofa as the sofa being asked about. 
 
 \begin{figure}[h]
 	\centering
