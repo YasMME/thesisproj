@@ -1,48 +1,41 @@
 % CREATED BY DAVID FRISK, 2016
 \chapter{Experiments}
-These experiments are designed to investigate different aspects of information given to the agent, in order to improve performance in the question answering portion of an embodied question answering task. The first experiment investigates how the baseline model is balancing the linguistic and visual information given to it. The second experiment gives the agent categorical information about the things it sees--another type of information about its current location. The third experiment combines use of a model pre-trained on another set of images, from another context, with linguistic information in the form of captions to give the agent new information. The fourth experiment gives the agent new viewpoints during question answering, broadening the visual information the agent has about its current location. The fifth experiment investigates if another architecture can give better performance with the available information. 
+These experiments are designed to investigate different aspects of information given to the agent, in order to improve performance in the question answering portion of an embodied question answering task. The first experiment investigates how the baseline model is balancing the linguistic and visual information given to it. The second experiment gives the agent categorical information about the things it sees--another type of information about its current location. The third experiment gives the agent new viewpoints during question answering, broadening the visual information the agent has about its current location. The fourth experiment continues to explore the model's balance of common sense and specific knowledge. The fifth experiment combines use of a model pre-trained on another set of images, from another context, with linguistic information in the form of captions to give the agent new information. The sixth experiment investigates if another architecture can give better performance with the available information. 
 
 \section{Experiment 1: Baseline and Blindfolding}
 \label{sec:exp_1}
 \subsection{Method}
-The first step was to train and evaluate the baseline that will be used as the point of comparison for all following experiments. This was the CNN and VQA portions of the EQA baseline in habitat-lab. A diagram of the VQA model can be seen in Fig.~\ref{fig:baseline_model}. 
+The first step was to train and evaluate the baseline that will be used as the point of comparison for all following experiments. This was the CNN and VQA portions of the EQA baseline in habitat-lab, described in~\ref{subsection:model}. A diagram of the VQA model can be seen in Fig.~\ref{fig:baseline_model}. 
 
 The next step was to determine if the model was actually considering the visual input when answering questions. This was done via a blindfolding test. There are a number of different ways to conduct blindfolding tests, depending on what you want to test. Because I was interested in if the model was learning visual information during training, I conducted an experiment in which the model was trained normally (the baseline model was used), and then blindfolded only during evaluation. The model was given zeroes instead of the visual content of the scene. This was done by duplicating and modifying the method that converts the .jpgs into numpy arrays to be input to the model, so that it produced an array of zeroes of the same size instead, sending a black/blank image as the input to the model. The point of this blindfolding was to determine if the VQA model was considering the visual input when answering the questions. 
 
-% SD 2021-05-01 15:33:59 +0200: Start with the question first and then describe the exepriment. Discuss also that there are several ways of conducting a blindfold study. For example, the Das et al paper that Nikolai found was changing the architecture of the model and was only using textual information. Why did you choose your method (compared to the other) and what are its implications on results: we test something else, right.
-
-\begin{figure}[h]
+\begin{figure}[H]
      \centering
      \includegraphics[width=.5\textwidth]{./figure/baseline_diagram.png}
      \caption{VQA Model}
      \label{fig:baseline_model}
 \end{figure}
 
-\subsection{Results}
-Fig.~\ref{fig:training_metrics} shows metrics for each batch during training, with a weighted average shown in orange. % SD 2021-05-01 15:45:21 +0200: Aha, so the model was trained with vision, just evaluated blindfolded. Cf. Das one could also train it in blindfolded way.
-Fig.~\ref{fig:baseline_metrics} shows metrics averaged for each epoch during the baseline evaluation. Fig.~\ref{fig:blindfolded_metrics} shows metrics averaged for each epoch during blindfolded evaluation. It's clear in these graphs that the evaluation results are more stable when the model is given images. As can be seen in Figures~\ref{fig:baseline_loss} \& ~\ref{fig:blindfolded_loss}, the model begins to overfit to the training data around epoch 10. \newline % SD 2021-05-01 15:48:38 +0200: I assume validation is performed after training each epoch. The model shows that a blindfolded model is more confused even during training which we can accept since the model is not really optimised on a blindfolded scenario. It would be interesting to see what would happen if the model is optimised on black images. Hence, you analysis raises new questions which would be interisting to answer. However, for the original question it would just be enough to report the final mean rank on the test set.
-Table~\ref{tab:best_baseline} shows the checkpoints with lowest loss, highest accuracy, and lowest mean rank during the evaluation of the baseline, with the metric that was "best" during that checkpoint in bold. Table~\ref{tab:best_blindfolded} shows the same for blindfolded evaluation. Comparing their best, the blindfolded model has 4.7\% worse loss than the baseline, 0.212 higher loss, and 0.149 higher mean rank. \newline % SD 2021-05-01 15:57:27 +0200: But of course the points at which this was achieved are different. Hence, the best model that we produce using images is not the best model to work in a blindfolded scenario.
-One question here is whether the blank inputs to the model are actively confusing it--in training it is always given an image, so this black input is a completely new case. This could also explain the differences to a previous student's course project, in which they found equivalent performance to baseline when the agent was given a random image from the dataset. One challenge here is that scenes are used for multiple questions, % SD 2021-05-01 15:59:17 +0200: the model might be getting the correct answers by chance. If we measure accuracy then we could integrate agreement by chance using the Kappa co-efficient: http://cswww.essex.ac.uk/technical-reports/2005/csm-437.pdf
-so this leaves open the possibility that the item being asked about is actually present in the room. Even using scenes not included in the dataset would be difficult to control, since if you ask the agent 'what color is the bookshelf?', you would then need to confirm that no bookshelves are present in the random image. \newline
-
-% SD 2021-05-01 16:03:30 +0200: There are a lot of questions that are interesting (and open) in this section, we could do more experiments and also there are diferent ways at looking at results. The focus on epochs shows how confused is your model during training when evaluated by blindfolded images. It is also interesting that the model gets more confused in later epochs, perhpas important vision information is only learned then? But how confused would be the best model that would be selected in training if blindfolded? What happens if we train the model blindfolded? We could therefore expand the discussion here significantly.
-
-\begin{figure}[ht!]
+\begin{figure}[H]
 	\centering
         \includegraphics[width=\textwidth]{./figure/results/baseline_and_blindfolding/images/ckpt_23_781_image.jpg}
 	\caption{Example VQA Result} % SD 2021-05-01 16:11:24 +0200: You would have to explain in the previous section why we have the input like this. The 5 frames probably means the last five actions taken by the navigation module (and not frames per second in the video sense.)
 	\label{fig:example_vqa_result}
 \end{figure}
-	
 
-\begin{figure}[ht!]
+\begin{figure}[H]
 	\centering
         \includegraphics[width=\textwidth]{./figure/results/baseline_and_blindfolding/blindfolded/ckpt_23_1250_image.jpg}
 	\caption{Example Blindfolded Result}
 	\label{fig:example_blindfolded_result}
 \end{figure}
+% SD 2021-05-01 15:33:59 +0200: Start with the question first and then describe the exepriment. Discuss also that there are several ways of conducting a blindfold study. For example, the Das et al paper that Nikolai found was changing the architecture of the model and was only using textual information. Why did you choose your method (compared to the other) and what are its implications on results: we test something else, right.
 
-\begin{figure}[ht!]
+\subsection{Results}
+Fig.~\ref{fig:training_metrics} shows metrics for each batch during training, with a weighted average shown in orange. % SD 2021-05-01 15:45:21 +0200: Aha, so the model was trained with vision, just evaluated blindfolded. Cf. Das one could also train it in blindfolded way.
+Fig.~\ref{fig:baseline_metrics} shows metrics averaged for each epoch during the baseline evaluation. Fig.~\ref{fig:blindfolded_metrics} shows metrics averaged for each epoch during blindfolded evaluation. It's clear in these graphs that the evaluation results are more stable when the model is given images. As can be seen in Figures~\ref{fig:baseline_loss} \& ~\ref{fig:blindfolded_loss}, the model begins to overfit to the training data around epoch 10.
+
+\begin{figure}[H]
      \centering
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
@@ -68,7 +61,7 @@ so this leaves open the possibility that the item being asked about is actually 
      \label{fig:training_metrics}
 \end{figure}
 
-\begin{figure}[ht!]
+\begin{figure}[H]
      \centering
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
@@ -95,7 +88,7 @@ so this leaves open the possibility that the item being asked about is actually 
 \end{figure}
 
 
-\begin{figure}[ht!]
+\begin{figure}[H]
      \centering
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
@@ -120,8 +113,9 @@ so this leaves open the possibility that the item being asked about is actually 
      \caption{Blindfolded Evaluation Metrics}
      \label{fig:blindfolded_metrics}
 \end{figure}
-
-\begin{table}[ht!]
+% SD 2021-05-01 15:48:38 +0200: I assume validation is performed after training each epoch. The model shows that a blindfolded model is more confused even during training which we can accept since the model is not really optimised on a blindfolded scenario. It would be interesting to see what would happen if the model is optimised on black images. Hence, you analysis raises new questions which would be interisting to answer. However, for the original question it would just be enough to report the final mean rank on the test set.
+Table~\ref{tab:best_baseline} shows the checkpoints with lowest loss, highest accuracy, and lowest mean rank during the evaluation of the baseline, with the metric that was "best" during that checkpoint in bold. Table~\ref{tab:best_blindfolded} shows the same for blindfolded evaluation. Comparing their best, the blindfolded model has 4.7\% worse loss than the baseline, 0.212 higher loss, and 0.149 higher mean rank. \newline % SD 2021-05-01 15:57:27 +0200: But of course the points at which this was achieved are different. Hence, the best model that we produce using images is not the best model to work in a blindfolded scenario.
+\begin{table}[H]
 \centering
 \caption{"Best" Epochs During Baseline Evaluation}
 \begin{tabular}{l | l | l | l}
@@ -134,7 +128,7 @@ Checkpoint & Loss & Accuracy & Mean Rank \\
 \label{tab:best_baseline}
 \end{table}
 
-\begin{table}[ht!]
+\begin{table}[H]
 \centering
 \caption{"Best" Epochs During Blindfolded Evaluation}
 \begin{tabular}{l | l | l | l}
@@ -147,15 +141,19 @@ Checkpoint & Loss & Accuracy & Mean Rank \\
 \label{tab:best_blindfolded}
 \end{table}
 
+One question here is whether the blank inputs to the model are actively confusing it--in training it is always given an image, so this black input is a completely new case. This could also explain the differences to a previous student's course project, in which they found equivalent performance to baseline when the agent was given a random image from the dataset. One challenge here is that scenes are used for multiple questions, % SD 2021-05-01 15:59:17 +0200: the model might be getting the correct answers by chance. If we measure accuracy then we could integrate agreement by chance using the Kappa co-efficient: http://cswww.essex.ac.uk/technical-reports/2005/csm-437.pdf
+so this leaves open the possibility that the item being asked about is actually present in the room. Even using scenes not included in the dataset would be difficult to control, since if you ask the agent 'what color is the bookshelf?', you would then need to confirm that no bookshelves are present in the random image. \newline
+
+% SD 2021-05-01 16:03:30 +0200: There are a lot of questions that are interesting (and open) in this section, we could do more experiments and also there are diferent ways at looking at results. The focus on epochs shows how confused is your model during training when evaluated by blindfolded images. It is also interesting that the model gets more confused in later epochs, perhpas important vision information is only learned then? But how confused would be the best model that would be selected in training if blindfolded? What happens if we train the model blindfolded? We could therefore expand the discussion here significantly.
+
+
 \section{Experiment 2: Basic Semantic Categories}
 \label{sec:exp_2}
 \subsection{Method}
-\todo{cite the paper about how categories helped with identifying unusual colors for an object}
-The agent in habitat-sim includes a 'semantic sensor', that reads annotations from the dataset. It reads annotations of object instances, which can then be mapped to category ids. The list of category IDs can be found in appendix~\ref{app:categories}. These category IDs were used as another information source for the model, as shown in Fig.~\ref{fig:category_model}.
+Schüz and Zarrieß found that models with prior knowledge about objects were able to make better predictions about those objects, and they found that an 'Early Fusion' strategy of integrating the object type information allowed the model to make better predictions about atypical colors of common objects\cite{colorknowledge}. Since one of the concerns with EQA models is that they are relying too heavily on common sense knowledge of objects, this is exactly what we would like to achieve--improving predictions about specific objects, which, if the prior knowledge about colors is not correct for the object, may be of atypical color. Based on this, I combined category information about objects in the scene with the visual features before attending with the question, as shown in Fig.~\ref{fig:category_model}. The categorical information comes from the 'semantic sensor' of the agent in habitat-sim, which reads annotations from the dataset. It reads annotations of object instances, which can then be mapped to category ids. The list of category IDs can be found in appendix~\ref{app:categories}. 
+\todo{Discuss shaping!}
 
 % SD 2021-05-01 15:37:23 +0200: Why do we believe semantic segmentation will be helpful? Also, point out that the categories for semantic segmentations are just general labels for surfaces and objects and than QA on object requires more detailed semantic information about the objects, including common sense knowledge that you mentioned earlier. Why place semantic segmentation after the linguistic and perceptual attention? What are our hypotheses?
-
-\todo{Give more detail on shaping, add motivation}
 \begin{figure}[h]
      \centering
      \includegraphics[width=.75\textwidth]{./figure/model_w_semantic.png}
@@ -164,12 +162,12 @@ The agent in habitat-sim includes a 'semantic sensor', that reads annotations fr
 \end{figure}
 
 \subsection{Results}
-In this experiment, the model was provided with semantic category information, as described in \ref{sec:exp_2}.
-With the categories, the highest accuracy on the evaluation set was 1.4\% higher than the baseline's highest accuracy, and the highest mean rank was 0.46 higher than the baseline's highest. \newline
+In this experiment, the model was provided with semantic category information, as described above.
+With the categories, the highest accuracy on the evaluation set was 1.4\% higher than the baseline's highest accuracy, and the highest mean rank was 0.46 higher than the baseline's highest. 
 
 % SD 2021-05-01 16:16:09 +0200: Note that since you are using a different model now the loss here is not comprabale with the loss of the previous baseline model. We need to find a way to demonstrate the improvement (or no improvement): the final mean rank on the test set?
 
-\begin{figure}[ht!]
+\begin{figure}[H]
      \centering
      \begin{subfigure}[b]{0.4\textwidth}
          \centering
@@ -188,7 +186,7 @@ With the categories, the highest accuracy on the evaluation set was 1.4\% higher
      \label{fig:category_metrics}
 \end{figure}
 
-\begin{table}[ht!]
+\begin{table}[H]
 \centering
 \caption{"Best" Epochs During Evaluation of Model with Semantic Categories}
 \begin{tabular}{l | l | l | l}
@@ -209,7 +207,7 @@ This experiment attempts to increase the usefulness of the visual information be
 
 \todo{calculate and discuss improvement by question type.}
 
-\begin{figure}[ht!]
+\begin{figure}[H]
      \centering
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
@@ -235,7 +233,7 @@ This experiment attempts to increase the usefulness of the visual information be
      \label{fig:la_t_metrics}
 \end{figure}
 
-\begin{figure}[ht!]
+\begin{figure}[H]
      \centering
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
@@ -262,7 +260,7 @@ This experiment attempts to increase the usefulness of the visual information be
 \end{figure}
 
 
-\begin{table}[ht!]
+\begin{table}[H]
 \centering
 \caption{"Best" Epochs During Evaluation of Model using Look Around (30, 30, 15, 15)}
 \begin{tabular}{l | l | l | l}
@@ -277,12 +275,12 @@ Checkpoint & Loss & Accuracy & Mean Rank \\
 
 \section{Experiment 4: Blind}
 \subsection{Method}
-For this experiment, the same function used to blindfold the model in Experiment 1 was also applied during training. This was done in order to have a 'text-only' baseline without changing the architecture of the model. 
+For this experiment, the same function used to blindfold the model in Experiment 1 was also applied during training. This was done in order to have a 'text-only' baseline without changing the architecture of the model, and to attempt to address the question of how much the model was being confused by the 'new' case of a black image after training with normal images. 
 
 \subsection{Results}
 The model trained without images, at its best checkpoints, performed comparably to the model trained with images and then blindfolded later, however, there is a clearer trajectory of the behaviour from checkpoint to checkpoint, as seen comparing Fig.~\ref{fig:fb_e_metrics} and Fig.~\ref{fig:blindfolded_metrics}. \todo{Loss??}
 
-\begin{figure}[ht!]
+\begin{figure}[H]
      \centering
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
@@ -308,7 +306,7 @@ The model trained without images, at its best checkpoints, performed comparably 
      \label{fig:fb_e_metrics}
 \end{figure}
 
-\begin{table}[ht!]
+\begin{table}[H]
 \centering
 \caption{"Best" Epochs of Blind Model}
 \begin{tabular}{l | l | l | l}
