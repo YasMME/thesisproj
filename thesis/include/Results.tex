@@ -89,6 +89,13 @@ Fig.~\ref{fig:baseline_metrics} shows metrics averaged for each epoch during the
      \label{fig:baseline_metrics}
 \end{figure}
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{./figure/wrong_answers/baseline_wrong_answer.png}
+	\caption{Baseline: Agreement to Ground Truth by Question Type}
+	\label{fig:baseline_agreement}
+\end{figure}
+
 
 \begin{figure}[H]
      \centering
@@ -143,7 +150,7 @@ Checkpoint & Loss & Accuracy & Mean Rank \\
 \label{tab:best_blindfolded}
 \end{table}
 
-One question here is whether the blank inputs to the model are actively confusing it--in training it is always given an image, so this black input is a completely new case. This could also explain the differences to a previous student's course project, in which they found equivalent performance to baseline when the agent was given a random image from the dataset. One challenge here is that scenes are used for multiple questions, % SD 2021-05-01 15:59:17 +0200: the model might be getting the correct answers by chance. If we measure accuracy then we could integrate agreement by chance using the Kappa co-efficient: http://cswww.essex.ac.uk/technical-reports/2005/csm-437.pdf
+One question here is whether the blank inputs to the model are actively confusing it--in training it is always given an image, so this black input is a completely new case. This could also explain the differences to a previous student's course project, in which they found equivalent performance to baseline when the agent was given a random image from the dataset. One challenge here is that scenes are used for multiple questions, \todo{talk about agreement by chance calculation}% SD 2021-05-01 15:59:17 +0200: the model might be getting the correct answers by chance. If we measure accuracy then we could integrate agreement by chance using the Kappa co-efficient: http://cswww.essex.ac.uk/technical-reports/2005/csm-437.pdf
 so this leaves open the possibility that the item being asked about is actually present in the room. Even using scenes not included in the dataset would be difficult to control, since if you ask the agent 'what color is the bookshelf?', you would then need to confirm that no bookshelves are present in the random image. \newline
 
 % SD 2021-05-01 16:03:30 +0200: There are a lot of questions that are interesting (and open) in this section, we could do more experiments and also there are diferent ways at looking at results. The focus on epochs shows how confused is your model during training when evaluated by blindfolded images. It is also interesting that the model gets more confused in later epochs, perhpas important vision information is only learned then? But how confused would be the best model that would be selected in training if blindfolded? What happens if we train the model blindfolded? We could therefore expand the discussion here significantly.
@@ -202,9 +209,12 @@ Checkpoint & Loss & Accuracy & Mean Rank \\
 \end{table}
 
 \section{Experiment 3: Look Around}
+\label{sec:exp_3}
 \subsection{Method}
 This experiment attempts to increase the usefulness of the visual information being provided to the model. The VQA model takes in the last five frames of navigation as its visual input. However, as seen in Fig.~\ref{fig:example_vqa_result}, these images are very similar to each other, and often have odd angles of the object in consideration. This experiment implements a look around procedure, where the agent takes a series of moves (look left, look right, etc) at the end of navigation, so that the last five frames give more varied viewpoints of the room and object. The hypothesis here was that the model should, given the larger visual context, perform better on location questions. \newline
 \todo{generation of the images, the agent, quaternions, calculation of new rotations}
+
+As can be seen in Figures~\ref{fig:la_agreement} and~\ref{fig:baseline_agreement}, this basic version of look around did not aid in answering location questions. \todo{new versions of look around}
 % NI 2021-05-17: we should cover/mention that a different (but related) experiment could be to start look around not near the object, but some time before it reaches the object. can be a possible solution to 'these images are very similar to each other, and often have odd angles of the object in consideration'?
 
 \subsection{Results}
@@ -260,6 +270,13 @@ This experiment attempts to increase the usefulness of the visual information be
      \label{fig:la_e_metrics}
 \end{figure}
 
+\begin{figure}[H]
+	\centuring
+	\includegraphics[width=\textwidth]{./figure/wrong_answers/wrong_answers_look_around.png}
+	\caption{Look Around: Agreement to Ground Truth by Question Type}
+	\label{fig:la_agreement}
+\end{figure}
+
 
 \begin{table}[H]
 \centering
@@ -275,11 +292,12 @@ Checkpoint & Loss & Accuracy & Mean Rank \\
 \end{table}
 
 \section{Experiment 4: Blind}
+\label{sec:exp_4}
 \subsection{Method}
 For this experiment, the same function used to blindfold the model in Experiment 1 was also applied during training. This was done in order to have a 'text-only' baseline without changing the architecture of the model, and to attempt to address the question of how much the model was being confused by the 'new' case of a black image after training with normal images during Experiment 1. 
 
 \subsection{Results}
-The model trained without images, at its best checkpoints, performed comparably to the model trained with images and then blindfolded later, however, there is a clearer trajectory of the behaviour from checkpoint to checkpoint, as seen comparing Fig.~\ref{fig:fb_e_metrics} and Fig.~\ref{fig:blindfolded_metrics}. \todo{Loss??}
+The model trained without images, at its best checkpoints, performed comparably to the model trained with images and then blindfolded later, however, there is a clearer trajectory of the behaviour from checkpoint to checkpoint, as seen comparing Fig.~\ref{fig:fb_e_metrics} and Fig.~\ref{fig:blindfolded_metrics}.
 
 \begin{figure}[H]
      \centering
@@ -318,3 +336,11 @@ Checkpoint & Loss & Accuracy & Mean Rank \\
 \end{tabular}
 \label{tab:best_blind}
 \end{table}
+
+\section{Experiment 5: Dataset Boosting}
+\label{sec:exp_5}
+\subsection{Method}
+\todo{performance between question types, scikit learn boosting}
+
+\subsection{Results}
+
