@@ -2,13 +2,12 @@
 \chapter{Experiments}
 These experiments are designed to investigate different aspects of information given to the agent, in order to improve performance in the question answering portion of an embodied question answering task. The first experiment investigates how the baseline model is balancing the linguistic and visual information given to it. The second experiment gives the agent categorical information about the things it sees--another type of information about its current location. The third experiment gives the agent new viewpoints during question answering, broadening the visual information the agent has about its current location. The fourth experiment continues to explore the model's balance of common sense and specific knowledge. The fifth experiment combines use of a model pre-trained on another set of images, from another context, with linguistic information in the form of captions to give the agent new information. The sixth experiment investigates if another architecture can give better performance with the available information. 
 
+\todo{add results by question type}
 \section{Experiment 1: Baseline and Blindfolding}
 \label{sec:exp_1}
 \subsection{Method}
-The first step was to train and evaluate the baseline that will be used as the point of comparison for all following experiments. This was the CNN and VQA portions of the EQA baseline in habitat-lab, described in~\ref{subsection:model}. A diagram of the VQA model can be seen in Fig.~\ref{fig:baseline_model}. 
-
+The first step was to train and evaluate the baseline that will be used as the point of comparison for all following experiments. This was the CNN and VQA portions of the EQA baseline in habitat-lab, described in~\ref{subsection:model}. A diagram of the VQA model can be seen in Fig.~\ref{fig:baseline_model}. \newline
 The next step was to determine if the model was actually considering the visual input when answering questions. This was done via a blindfolding test. There are a number of different ways to conduct blindfolding tests, depending on what you want to test. Because I was interested in if the model was learning visual information during training, I conducted an experiment in which the model was trained normally (the baseline model was used), and then blindfolded only during evaluation. The model was given zeroes instead of the visual content of the scene. This was done by duplicating and modifying the method that converts the .jpgs into numpy arrays to be input to the model, so that it produced an array of zeroes of the same size instead, sending a black/blank image as the input to the model. The point of this blindfolding was to determine if the VQA model was considering the visual input when answering the questions. 
-
 % NI 2021-05-17: here, when you describe how exactly you modified images into empty arrays, you could describe it through formulas, not through text
 
 \begin{figure}[H]
@@ -123,7 +122,7 @@ Fig.~\ref{fig:baseline_metrics} shows metrics averaged for each epoch during the
      \label{fig:blindfolded_metrics}
 \end{figure}
 % SD 2021-05-01 15:48:38 +0200: I assume validation is performed after training each epoch. The model shows that a blindfolded model is more confused even during training which we can accept since the model is not really optimised on a blindfolded scenario. It would be interesting to see what would happen if the model is optimised on black images. Hence, you analysis raises new questions which would be interisting to answer. However, for the original question it would just be enough to report the final mean rank on the test set.
-Table~\ref{tab:best_baseline} shows the checkpoints with lowest loss, highest accuracy, and lowest mean rank during the evaluation of the baseline, with the metric that was "best" during that checkpoint in bold. Table~\ref{tab:best_blindfolded} shows the same for blindfolded evaluation. Comparing their best, the blindfolded model has 4.7\% worse loss than the baseline, 0.212 higher loss, and 0.149 higher mean rank. \newline % SD 2021-05-01 15:57:27 +0200: But of course the points at which this was achieved are different. Hence, the best model that we produce using images is not the best model to work in a blindfolded scenario.
+Table~\ref{tab:best_baseline} shows the checkpoints with lowest loss, highest accuracy, and lowest mean rank during the evaluation of the baseline, with the metric that was "best" during that checkpoint in bold. Table~\ref{tab:best_blindfolded} shows the same for blindfolded evaluation. Comparing their best, the blindfolded model has 4.7\% worse accuracy than the baseline and 0.149 higher mean rank. These are also not achieved at the same checkpoint--the best model to use with visual input is the not the one that works best when forced to rely entirely on linguistic input. \newline % SD 2021-05-01 15:57:27 +0200: But of course the points at which this was achieved are different. Hence, the best model that we produce using images is not the best model to work in a blindfolded scenario.
 \begin{table}[H]
 \centering
 \caption{"Best" Epochs During Baseline Evaluation}
@@ -150,7 +149,7 @@ Checkpoint & Loss & Accuracy & Mean Rank \\
 \label{tab:best_blindfolded}
 \end{table}
 
-One question here is whether the blank inputs to the model are actively confusing it--in training it is always given an image, so this black input is a completely new case. This could also explain the differences to a previous student's course project, in which they found equivalent performance to baseline when the agent was given a random image from the dataset. One challenge here is that scenes are used for multiple questions, \todo{talk about agreement by chance calculation}% SD 2021-05-01 15:59:17 +0200: the model might be getting the correct answers by chance. If we measure accuracy then we could integrate agreement by chance using the Kappa co-efficient: http://cswww.essex.ac.uk/technical-reports/2005/csm-437.pdf
+One question here is whether the blank inputs to the model are actively confusing it--in training it is always given an image, so this black input is a completely new case. This could also explain the differences to a previous student's course project, in which they found equivalent performance to baseline when the agent was given a random image from the dataset. One challenge here is that scenes are used for multiple questions, % SD 2021-05-01 15:59:17 +0200: the model might be getting the correct answers by chance. If we measure accuracy then we could integrate agreement by chance using the Kappa co-efficient: http://cswww.essex.ac.uk/technical-reports/2005/csm-437.pdf
 so this leaves open the possibility that the item being asked about is actually present in the room. Even using scenes not included in the dataset would be difficult to control, since if you ask the agent 'what color is the bookshelf?', you would then need to confirm that no bookshelves are present in the random image. \newline
 
 % SD 2021-05-01 16:03:30 +0200: There are a lot of questions that are interesting (and open) in this section, we could do more experiments and also there are diferent ways at looking at results. The focus on epochs shows how confused is your model during training when evaluated by blindfolded images. It is also interesting that the model gets more confused in later epochs, perhpas important vision information is only learned then? But how confused would be the best model that would be selected in training if blindfolded? What happens if we train the model blindfolded? We could therefore expand the discussion here significantly.
@@ -212,12 +211,25 @@ Checkpoint & Loss & Accuracy & Mean Rank \\
 \label{sec:exp_3}
 \subsection{Method}
 This experiment attempts to increase the usefulness of the visual information being provided to the model. The VQA model takes in the last five frames of navigation as its visual input. However, as seen in Fig.~\ref{fig:example_vqa_result}, these images are very similar to each other, and often have odd angles of the object in consideration. This experiment implements a look around procedure, where the agent takes a series of moves (look left, look right, etc) at the end of navigation, so that the last five frames give more varied viewpoints of the room and object. The hypothesis here was that the model should, given the larger visual context, perform better on location questions. \newline
-\todo{generation of the images, the agent, quaternions, calculation of new rotations}
+The 'frame queues' for each episode are generated before beginning training or evaluation, by saving the rgb observations of the agent at specified positions and rotations. (These are given in a global coordinate frame.) In the baseline model, this frame queue is that last five frames of navigation. For the look around experiment, this queue is: the final position and rotation of navigation, a frame from the same position turned 0.523599 radians to the left, same position turned 0.523599 radians to the right (from the original rotation), same position turned up 0.2617995 radians (from the original rotation), and the same position turned down 0.2617995 radians (from the original rotation). As can be seen in Fig.~\ref{fig:look_around}, this gives more variation in the final five frames. \newline
+Rotations are represented as quaternions, a compact representation that doesn't suffer from gimbal lock. These quaternions are expressed in [x, y, z, w]. The new rotations are calculated by: \\ \begin{math}
+original = [x0, y0, z0, w0] \\
+rotate = [0, 1, 0, rotation\_amount] \\
+new\_quaternion = original * rotation
+\end{math}
 
-As can be seen in Figures~\ref{fig:la_agreement} and~\ref{fig:baseline_agreement}, this basic version of look around did not aid in answering location questions. \todo{new versions of look around}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{./figure/lookaroundexample.jpg}
+	\caption{Look Around Example}
+	\label{fig:look_around}
+\end{figure}
+
+\todo{discuss new versions of look around}
 % NI 2021-05-17: we should cover/mention that a different (but related) experiment could be to start look around not near the object, but some time before it reaches the object. can be a possible solution to 'these images are very similar to each other, and often have odd angles of the object in consideration'?
 
 \subsection{Results}
+Using Look Around, the model was able to perform slightly better than baseline. The best mean rank was 0.41 lower than baseline, and the highest accuracy was 0.9\% higher than baseline. 
 \begin{figure}[H]
      \centering
      \begin{subfigure}[b]{0.3\textwidth}
@@ -269,14 +281,6 @@ As can be seen in Figures~\ref{fig:la_agreement} and~\ref{fig:baseline_agreement
      \caption{Look Around Evaluation Metrics}
      \label{fig:la_e_metrics}
 \end{figure}
-
-\begin{figure}[H]
-	\centuring
-	\includegraphics[width=\textwidth]{./figure/wrong_answers/wrong_answers_look_around.png}
-	\caption{Look Around: Agreement to Ground Truth by Question Type}
-	\label{fig:la_agreement}
-\end{figure}
-
 
 \begin{table}[H]
 \centering
