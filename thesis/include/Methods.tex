@@ -11,11 +11,17 @@ The question answering module is given the last five frames of navigation (in tr
 The training of the Habitat-Lab version of the model\footnote{available here: \url{https://github.com/facebookresearch/habitat-lab/tree/master/habitat_baselines/il}} differs somewhat to the version presented in the Embodied Question Answering paper \cite{embodiedqa}. For the original model, the CNN, question answering, and navigation modules were all trained separately, and then reinforcement learning was used to fine-tune, and more strongly link the question answering and navigation modules, by using accurate question answering % SD 2021-05-01 15:13:19 +0200: the success of, i.e. yes/no but no more information than this
 % NI 2021-05-17: do not forget to note that only the navigation was fine-tuned through RL, the question answering has been frozen (section 4.1 in the paper)
 as part of the reward for the navigation module. This reinforcement learning is missing from the habitat version of the model; the components of the model are only trained separately. 
-\todo{diagram here, discuss shaping}
+\todo{add diagram of the full EQA model}
 % SD 2021-05-01 15:14:03 +0200: Reference to the Habitat-Lab github. Reverse the order of descriptions: navigation before QA
 
 % SD 2021-05-01 15:21:10 +0200: Here it would be in place to include a model diagram and then indicate in what ways the baseline model is different from the original Das paper. Later on you can use modified version of the same diagram to point our your extensions. It would also be good to mention the paramateres of the model, i.e. the sizes of inputs, outputs and the intermediate layers.
-
+A diagram of the Habitat version of the VQA portion of the baseline model can be seen in~\ref{fig:baseline_model}. \todo{Discuss sizes, redraw diagram so it works smaller}
+\begin{figure}[H]
+     \centering
+     \includegraphics[width=.5\textwidth]{./figure/baseline_diagram.png}
+     \caption{VQA Model}
+     \label{fig:baseline_model}
+\end{figure}
 
 \section{The Datasets}
 % SD 2021-05-01 15:15:54 +0200: Present tense is okay since this a description of the current research; normally we would use past tense to distinguish what we are doing here from the previous publication.
@@ -52,13 +58,20 @@ The dataset has a fixed train/evaluation split. There is one object which only o
 \subsubsection{Limitations}
 The paper which introduces the MP3D-EQA dataset was mainly focused on the navigation aspect of the task, and the question types reflect that. A color or location question should theoretically be a good indication of whether or not the agent has successfully navigated to the object, but actually answering the question may not require as complex of reasoning, in that it shouldn't require a long memory to answer. \newline
 However, color identification is actually a very difficult task. One issue is purely visual--an object's color looks different in different lighting conditions, so someone might see something as light grey in good light, but in dimmer light only see it as grey. Another, more complex issue, is related to language: the way that humans identify and refer to colors is context dependent. Monroe et al created a dataset of color descriptions using pairs of Amazon Mechanical Turk participants \cite{colorsincontext}. One member of the pair was the speaker, the other was the listener. Both people could see the same three color samples, and the speaker was given one of them as the 'target', which they needed to convey to the listener. There were three possible situations: baseline, or 'far', where all three samples were very distinct, such as pink, green, and yellow; split, where one of the other colors (called distractors) was close to the target, such as two shades of blue, and then the last distractor was far, for example yellow; and close, where both distractors were similar to the target (all shades of blue, for example). They found that in the 'split' and 'close' conditions, the speaker used more comparatives (i.e. lighter blue) and superlatives (i.e. the lightest one), and also was more likely to use 'high specificity' color terms, such as 'magenta' or 'teal', using more basic terms, such as 'red' or 'blue', in the 'far' condition. This suggests that people would adjust their descriptions of an object's color based on what is around it. \newline
-Another color issue, specific to the MP3D-EQA dataset, is that the colors used for annotation (done by Amazon Mechanical Turk workers), come from Kenneth L. Kelly's 'Twenty-two colors of maximum contrast', with the addition of 'off-white' and 'slate grey', since they are very common in indoor scenes \cite{kellycolors}. However, Kelly's colors were not designed to be natural color descriptions; they were developed as a set of colors that could be used in situations where contrast was needed--for example color coding of graphs. \todo{be more explicit about issues here.} This is shown by the inclusion of both 'buff' and 'yellowish pink' in the color set. Off-white and white are also prone to being confused due to lighting conditions.\newline
-
+Another color issue, specific to the MP3D-EQA dataset, is that the colors used for annotation (done by Amazon Mechanical Turk workers), come from Kenneth L. Kelly's 'Twenty-two colors of maximum contrast', with the addition of 'off-white' and 'slate grey', since they are very common in indoor scenes \cite{kellycolors}. However, Kelly's colors were not designed to be natural color descriptions; they were developed as a set of colors that could be used in situations where contrast was needed--for example color coding of graphs. This is shown by the inclusion of both 'buff' and 'yellowish pink' in the color set, both of which are unlikely to be common color descriptions. Another issue is that the set contains 'white' and 'off-white', as well as 'grey' and 'slate grey', pairs which are likely to be confused in different lighting conditions.\newline
+\todo{more discussion of how people actually describe colors? At least more citations? Clean up explanation of reference}
 The dataset of questions and answers for EQA in Habitat was automatically generated, and may contain some errors. One example of this is shown in Fig.~\ref{fig:err_ex}, in which the VQA model answered that the sofa in the living room is tan, but the ground truth answer is that it is yellow. However, looking at the image, I see a tan sofa and a yellow armchair. It seems that at some point, the armchair was annotated as a sofa, but the model is identifying the tan sofa as the sofa being asked about. 
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{./figure/error_images/ckpt_0_121_image.jpg}
+	\captionsetup{justification=raggedright, textfont=footnotesize}
+	\caption*{Question: What color is the sofa in the living room? \\
+	Prediction: tan \\
+	Ground Truth: yellow}
+    \captionsetup{labelfont=bf, textfont=normal,
+			justification=centering,
+			singlelinecheck=false}
 	\caption{Error Example}
 	\label{fig:err_ex}
 \end{figure}

@@ -16,7 +16,11 @@
 \numberwithin{equation}{chapter}					% Numbering order for equations
 \numberwithin{figure}{chapter}						% Numbering order for figures
 \numberwithin{table}{chapter}						% Numbering order for tables
-\usepackage{minted}						    		% Enables source code listings
+%\usepackage{minted}						    		% Enables source code listings
+\usepackage{listings}
+\lstset{aboveskip=0pt, 
+	belowskip=0pt, 
+	xleftmargin=50pt}
 \usepackage{chemfig}								% Chemical structures
 \usepackage[top=3cm, bottom=3cm,
 			inner=3cm, outer=3cm]{geometry}			% Page margin lengths			
