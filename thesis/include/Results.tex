@@ -8,7 +8,7 @@ These experiments are designed to investigate different aspects of information g
 \subsection{Method}
 The first step was to train and evaluate the baseline that will be used as the point of comparison for all following experiments. This was the CNN and VQA portions of the EQA baseline in habitat-lab, described in~\ref{subsection:model}. A diagram of the baseline VQA model can be seen in Fig.~\ref{fig:baseline_model}. An example of the input frames and question and output answer can be seen in Fig.~\ref{fig:example_vqa_result}.\newline
 
-\begin{figure}[H]
+\begin{figure}[h]
 	\centering
         \includegraphics[width=\textwidth]{./figure/results/baseline_and_blindfolding/images/ckpt_23_781_image.jpg}
     \captionsetup{justification=raggedright, textfont=footnotesize}
@@ -24,7 +24,7 @@ The first step was to train and evaluate the baseline that will be used as the p
 
 The next step was to determine if the model was actually considering the visual input when answering questions. This was done via a blindfolding test. There are a number of different ways to conduct blindfolding tests, depending on what you want to test. Because I was interested in if the model was learning visual information during training, I conducted an experiment in which the model was trained normally (the baseline model was used), and then blindfolded only during evaluation. The model was given zeroes instead of the visual content of the scene. This was done by duplicating and modifying the method that converts the .jpgs into numpy arrays to be input to the model, so that it produced an array of zeroes of the same size instead, sending a black image as the input to the model. The point of this blindfolding was to determine if the VQA model was considering the visual input when answering the questions. \todo{how to change to formulas?}
 % NI 2021-05-17: here, when you describe how exactly you modified images into empty arrays, you could describe it through formulas, not through text
-\begin{figure}[H]
+\begin{figure}[h]
 	\centering
         \includegraphics[width=\textwidth]{./figure/results/baseline_and_blindfolding/blindfolded/ckpt_23_1250_image.jpg}
 	\captionsetup{justification=raggedright, textfont=footnotesize}
@@ -43,7 +43,7 @@ The next step was to determine if the model was actually considering the visual 
 Fig.~\ref{fig:training_metrics} shows metrics for each batch during training, with a weighted average shown in orange. % SD 2021-05-01 15:45:21 +0200: Aha, so the model was trained with vision, just evaluated blindfolded. Cf. Das one could also train it in blindfolded way.
 Fig.~\ref{fig:baseline_metrics} shows metrics averaged for each epoch during the baseline evaluation. Fig.~\ref{fig:blindfolded_metrics} shows metrics averaged for each epoch during blindfolded evaluation. It's clear in these graphs that the evaluation results are more stable when the model is given images. As can be seen in Figures~\ref{fig:baseline_loss} \& ~\ref{fig:blindfolded_loss}, the model begins to overfit to the training data around epoch 10.
 
-\begin{figure}[H]
+\begin{figure}[h]
      \centering
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
@@ -69,7 +69,7 @@ Fig.~\ref{fig:baseline_metrics} shows metrics averaged for each epoch during the
      \label{fig:training_metrics}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[h]
      \centering
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
@@ -95,7 +95,7 @@ Fig.~\ref{fig:baseline_metrics} shows metrics averaged for each epoch during the
      \label{fig:baseline_metrics}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[h]
      \centering
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
@@ -120,11 +120,13 @@ Fig.~\ref{fig:baseline_metrics} shows metrics averaged for each epoch during the
      \caption{Blindfolded Evaluation Metrics}
      \label{fig:blindfolded_metrics}
 \end{figure}
+
+
 % SD 2021-05-01 15:48:38 +0200: I assume validation is performed after training each epoch. The model shows that a blindfolded model is more confused even during training which we can accept since the model is not really optimised on a blindfolded scenario. It would be interesting to see what would happen if the model is optimised on black images. Hence, you analysis raises new questions which would be interisting to answer. However, for the original question it would just be enough to report the final mean rank on the test set.
-Table~\ref{tab:best_baseline} shows the checkpoints with lowest loss, highest accuracy, and lowest mean rank during the evaluation of the baseline, with the metric that was "best" during that checkpoint in bold. Table~\ref{tab:best_blindfolded} shows the same for blindfolded evaluation. Comparing their best, the blindfolded model has 4.7\% worse accuracy than the baseline and 0.149 higher mean rank. These are also not achieved at the same checkpoint--the best model to use with visual input is the not the one that works best when forced to rely entirely on linguistic input. \newline % SD 2021-05-01 15:57:27 +0200: But of course the points at which this was achieved are different. Hence, the best model that we produce using images is not the best model to work in a blindfolded scenario.
-\begin{table}[H]
+Table~\ref{tab:best_baseline} shows the checkpoints with lowest loss, highest accuracy, and lowest mean rank during the evaluation of the baseline, referred to from here on as the 'best' epochs. Table~\ref{tab:best_blindfolded} shows the same for blindfolded evaluation. Comparing their best, the blindfolded model has 4.7\% worse accuracy than the baseline and 0.149 higher mean rank. These are also not achieved at the same checkpoint--the best model to use with visual input is the not the one that works best when forced to rely entirely on linguistic input. \newline % SD 2021-05-01 15:57:27 +0200: But of course the points at which this was achieved are different. Hence, the best model that we produce using images is not the best model to work in a blindfolded scenario.
+\begin{table}[h]
 \centering
-\caption{"Best" Epochs During Baseline Evaluation}
+\caption{Best Epochs During Baseline Evaluation}
 \begin{tabular}{l | l | l | l}
 Checkpoint & Loss & Accuracy & Mean Rank \\
 \hline
@@ -135,9 +137,9 @@ Checkpoint & Loss & Accuracy & Mean Rank \\
 \label{tab:best_baseline}
 \end{table}
 
-\begin{table}[H]
+\begin{table}[h]
 \centering
-\caption{"Best" Epochs During Blindfolded Evaluation}
+\caption{Best Epochs During Blindfolded Evaluation}
 \begin{tabular}{l | l | l | l}
 Checkpoint & Loss & Accuracy & Mean Rank \\
 \hline
@@ -152,6 +154,7 @@ One question here is whether the blank inputs to the model are actively confusin
 so this leaves open the possibility that the item being asked about is actually present in the room. Even using scenes not included in the dataset would be difficult to control, since if you ask the agent 'what color is the bookshelf?', you would then need to confirm that no bookshelves are present in the random image. \newline
 
 % SD 2021-05-01 16:03:30 +0200: There are a lot of questions that are interesting (and open) in this section, we could do more experiments and also there are diferent ways at looking at results. The focus on epochs shows how confused is your model during training when evaluated by blindfolded images. It is also interesting that the model gets more confused in later epochs, perhpas important vision information is only learned then? But how confused would be the best model that would be selected in training if blindfolded? What happens if we train the model blindfolded? We could therefore expand the discussion here significantly.
+\todo{Do I put in the kappa results here, or accuracy by question type? And then kappa in the discussion?}
 
 \section{Experiment 2: Basic Semantic Categories}
 \label{sec:exp_2}
@@ -173,7 +176,7 @@ With the categories, the highest accuracy on the evaluation set was 1.4\% higher
 
 % SD 2021-05-01 16:16:09 +0200: Note that since you are using a different model now the loss here is not comprabale with the loss of the previous baseline model. We need to find a way to demonstrate the improvement (or no improvement): the final mean rank on the test set?
 
-\begin{figure}[H]
+\begin{figure}[h]
      \centering
      \begin{subfigure}[b]{0.4\textwidth}
          \centering
@@ -192,9 +195,9 @@ With the categories, the highest accuracy on the evaluation set was 1.4\% higher
      \label{fig:category_metrics}
 \end{figure}
 
-\begin{table}[H]
+\begin{table}[h]
 \centering
-\caption{"Best" Epochs During Evaluation of Model with Semantic Categories}
+\caption{Best Epochs During Evaluation of Model with Semantic Categories}
 \begin{tabular}{l | l | l | l}
 Checkpoint & Loss & Accuracy & Mean Rank \\
 \hline
@@ -215,7 +218,7 @@ original_rotation = [x0, y0, z0, w0]
 rotation = [0, 1, 0, rotation_amount] 
 new_quaternion = original_rotation * rotation\end{lstlisting}
 
-\begin{figure}[H]
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{./figure/lookaroundexample.jpg}
 	\captionsetup{justification=raggedright, textfont=footnotesize}
@@ -234,33 +237,8 @@ new_quaternion = original_rotation * rotation\end{lstlisting}
 
 \subsection{Results}
 Using Look Around, the model was able to perform slightly better than baseline. The best mean rank was 0.41 lower than baseline, and the highest accuracy was 0.9\% higher than baseline. 
-\begin{figure}[H]
-     \centering
-     \begin{subfigure}[b]{0.3\textwidth}
-         \centering
-         \includegraphics[width=\textwidth]{./figure/results/look_around/training/accuracy.png}
-         \caption{Training Accuracy}
-         \label{fig:la_t_accuracy}
-     \end{subfigure}
-     \hfill
-     \begin{subfigure}[b]{0.3\textwidth}
-         \centering
-         \includegraphics[width=\textwidth]{./figure/results/look_around/training/loss.png}
-         \caption{Training Loss}
-         \label{fig:la_t_loss}
-     \end{subfigure}
-     \hfill
-     \begin{subfigure}[b]{0.3\textwidth}
-         \centering
-         \includegraphics[width=\textwidth]{./figure/results/look_around/training/mean_rank.png}
-         \caption{Mean Rank}
-         \label{fig:la_t_mean_rank}
-     \end{subfigure}
-     \caption{Look Around Training Metrics}
-     \label{fig:la_t_metrics}
-\end{figure}
 
-\begin{figure}[H]
+\begin{figure}[h]
      \centering
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
@@ -286,9 +264,9 @@ Using Look Around, the model was able to perform slightly better than baseline. 
      \label{fig:la_e_metrics}
 \end{figure}
 
-\begin{table}[H]
+\begin{table}[h]
 \centering
-\caption{"Best" Epochs During Evaluation of Model using Look Around (30, 30, 15, 15)}
+\caption{Best Epochs During Evaluation of Model using Look Around (30, 30, 15, 15)}
 \begin{tabular}{l | l | l | l}
 Checkpoint & Loss & Accuracy & Mean Rank \\
 \hline
@@ -307,7 +285,7 @@ For this experiment, the same function used to blindfold the model in Experiment
 \subsection{Results}
 The model trained without images, at its best checkpoints, performed comparably to the model trained with images and then blindfolded later, however, there is a clearer trajectory of the behaviour from checkpoint to checkpoint, as seen comparing Fig.~\ref{fig:fb_e_metrics} and Fig.~\ref{fig:blindfolded_metrics}.
 
-\begin{figure}[H]
+\begin{figure}[h]
      \centering
      \begin{subfigure}[b]{0.3\textwidth}
          \centering
@@ -333,9 +311,9 @@ The model trained without images, at its best checkpoints, performed comparably 
      \label{fig:fb_e_metrics}
 \end{figure}
 
-\begin{table}[H]
+\begin{table}[h]
 \centering
-\caption{"Best" Epochs of Blind Model}
+\caption{Best Epochs of Blind Model}
 \begin{tabular}{l | l | l | l}
 Checkpoint & Loss & Accuracy & Mean Rank \\
 \hline
@@ -347,8 +325,15 @@ Checkpoint & Loss & Accuracy & Mean Rank \\
 
 \section{Experiment 5: Dataset Boosting}
 \label{sec:exp_5}
+Since the model has varying accuracy by question type, as seen \todo{ref}, and the highest accuracy is generally seen in the color room type, which is significantly larger than the other two categories, I performed an experiment in which the other two categories were boosted, to match the size of the color room question category. 
 \subsection{Method}
-\todo{performance between question types, scikit learn boosting}
+The original training set contains 8031 color\_room questions, 1830 color questions, and 1635 location questions. Using Imbalanced-learn's RandomOverSampler, the color and location types were bootstrapped to be contain 8031 questions as well \cite{imblearn}. This was done with random sampling with replacement. The original baseline model was then trained on this larger dataset.
+\subsection{Results}
 
+
+\section{Experiment 6: Faster R-CNN}
+\label{sec:exp_6}
+This section covers a series of experiments using outputs from Faster R-CNN as additional or alternate input sources. 
+\subsection{Method}
 \subsection{Results}
 
